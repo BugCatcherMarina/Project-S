@@ -8,8 +8,7 @@ namespace ProjectS.Map
         [SerializeField] private MapAsset defaultMap;
         [SerializeField] private Transform tileParent;
         
-        // TODO: Make this (and all our prefabs) addressable
-        [SerializeField] private Tile walkableTilePrefab;
+        [SerializeField] private Tile grassTile;
 
         private readonly List<Tile> tiles = new();
 
@@ -48,7 +47,7 @@ namespace ProjectS.Map
         private void CreateTile(int x, int z)
         {
             Vector3Int position = new Vector3Int(x, 0, z);
-            Tile tile = Instantiate(walkableTilePrefab, position, Quaternion.identity, tileParent);
+            Tile tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
             tiles.Add(tile);
         }
     }
