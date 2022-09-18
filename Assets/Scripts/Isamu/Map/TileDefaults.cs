@@ -1,7 +1,7 @@
-using ProjectS.Utils;
+using Isamu.Utils;
 using UnityEngine;
 
-namespace ProjectS.Map
+namespace Isamu.Map
 {
     /// <summary>
     /// TileDefaults stores values that all Tiles need, allowing these non-changing values to live in a single place.

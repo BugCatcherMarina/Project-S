@@ -10,6 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20b74d2dd3694cffa45f8dea0891c965, type: 3}
-  m_Name: PrototypeUnitAsset
+  m_Name: PrototypeUnitAsset2
   m_EditorClassIdentifier: 
-  spawnPosition: {x: 0, y: 0}
+  spawnPosition:
+    x: 2
+    z: 4

@@ -1,7 +1,7 @@
-using ProjectS.Utils;
+using Isamu.Utils;
 using UnityEngine;
 
-namespace ProjectS.Map
+namespace Isamu.Map
 {
     /// <summary>
     /// MapAsset currently stores the grid dimensions, but could be expanded on later.

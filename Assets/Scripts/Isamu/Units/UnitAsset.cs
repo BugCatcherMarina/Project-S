@@ -1,8 +1,8 @@
+using Isamu.Utils;
 using System;
-using ProjectS.Utils;
 using UnityEngine;
 
-namespace ProjectS.Units
+namespace Isamu.Units
 {
     [CreateAssetMenu(fileName = NAME, menuName = ProjectConsts.CUSTOM_ASSET_MENU + NAME)]
     public class UnitAsset : ScriptableObject

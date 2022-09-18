@@ -1,4 +1,4 @@
-namespace ProjectS.Services
+namespace Isamu.Services
 {
     public abstract class Service
     {

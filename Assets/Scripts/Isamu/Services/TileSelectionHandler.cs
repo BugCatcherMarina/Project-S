@@ -1,6 +1,6 @@
-using ProjectS.Map;
+using Isamu.Map;
 
-namespace ProjectS.Services
+namespace Isamu.Services
 {
     public class TileSelectionHandler : Service
     {

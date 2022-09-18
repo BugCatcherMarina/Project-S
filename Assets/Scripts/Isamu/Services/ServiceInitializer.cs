@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ProjectS.Services
+namespace Isamu.Services
 {
     public static class ServiceInitializer
     {

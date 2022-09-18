@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ProjectS.Map
+namespace Isamu.Map
 {
     public class Tile : MonoBehaviour
     {

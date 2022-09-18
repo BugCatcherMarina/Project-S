@@ -1,7 +1,8 @@
+using Isamu.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ProjectS.Map
+namespace Isamu.Map
 {
     public class MapGenerator : MonoBehaviour
     {
@@ -46,7 +47,7 @@ namespace ProjectS.Map
 
         private void CreateTile(int x, int z)
         {
-            Vector3Int position = new Vector3Int(x, 0, z);
+            Vector3Int position = new Vector3Int(x, ProjectConsts.TILE_Y_POSITION, z);
             Tile tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
             tiles.Add(tile);
         }

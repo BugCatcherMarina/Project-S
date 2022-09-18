@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace ProjectS.General
+namespace Isamu.General
 {
-    [RequireComponent(typeof(Collider))]
     public class InteractableBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField] private UnityEvent onPointerEnter;
