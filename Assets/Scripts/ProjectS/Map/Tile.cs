@@ -1,47 +1,39 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace ProjectS.Map
 {
-    public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class Tile : MonoBehaviour
     {
         public static event Action<Tile> OnClick;
         
         [SerializeField] private TileDefaults tileDefaults;
-
+        [SerializeField] private MeshRenderer meshRenderer;
+        
         private bool isSelected;
         
         private Material Material
         {
             get
             {
-                _material ??= GetComponent<MeshRenderer>().material;
+                _material ??= meshRenderer.material;
                 return _material;
             }
         }
         
         private Material _material;
-        
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            if (!isSelected)
-            {
-                Material.color = tileDefaults.HoverColor;
-            }
-        }
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            if (!isSelected)
-            {
-                Material.color = tileDefaults.DefaultColor;
-            }
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
+        public void HandlePointerClick()
         {
             OnClick?.Invoke(this);
+        }
+        
+        public void IsHovering(bool isHover)
+        {
+            if (!isSelected)
+            {
+                Material.color = isHover ? tileDefaults.HoverColor : tileDefaults.DefaultColor;
+            }
         }
 
         public void SetIsSelected(bool isTileSelected)
