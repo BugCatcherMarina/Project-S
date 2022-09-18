@@ -15,3 +15,6 @@ MonoBehaviour:
   spawnPosition:
     x: 2
     z: 4
+  stats:
+    movement: 0
+    speed: 10

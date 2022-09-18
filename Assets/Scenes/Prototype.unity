@@ -304,11 +304,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96eee995d70342cfb5acb1c26ef0f694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitAssets:
+  - {fileID: 11400000, guid: 396da87b2e37d4f6bb639c96ebd83b94, type: 2}
+  - {fileID: 11400000, guid: 7fe6eb3f0c83f43368d8248cb91b73ab, type: 2}
+  - {fileID: 11400000, guid: 05d4f2ae2a7c3437bb32e085da7a4122, type: 2}
+  - {fileID: 11400000, guid: 1a13ea68530714682bcf58fc47adb546, type: 2}
   unitPrefab: {fileID: 4171781044154418164, guid: 51e174f8611c44c22948affc7bd9af0d,
     type: 3}
-  units:
-  - {fileID: 11400000, guid: 1a13ea68530714682bcf58fc47adb546, type: 2}
-  - {fileID: 11400000, guid: 396da87b2e37d4f6bb639c96ebd83b94, type: 2}
   unitParent: {fileID: 176840628}
 --- !u!1 &853082425
 GameObject:

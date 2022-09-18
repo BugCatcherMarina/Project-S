@@ -20,7 +20,9 @@ namespace Isamu.Units
         private const string NAME = nameof(UnitAsset);
 
         public SpawnPosition Spawn => spawnPosition;
+        public UnitStats Stats => stats;
         
         [SerializeField] private SpawnPosition spawnPosition;
+        [SerializeField] private UnitStats stats;
     }
 }

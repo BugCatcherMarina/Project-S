@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Isamu.Units
@@ -5,11 +6,11 @@ namespace Isamu.Units
     public class UnitBehaviour : MonoBehaviour
     {
         // Currently unused -- stubbing this in for future use.
-        private UnitAsset _unitAsset;
+        public UnitAsset UnitAsset { get; private set; }
         
         public void Configure(UnitAsset unitAsset)
         {
-            _unitAsset = unitAsset;
+            UnitAsset = unitAsset;
         }
     }
 }

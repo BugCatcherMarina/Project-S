@@ -16,6 +16,7 @@ namespace Isamu.Services
 
         private static void CreateServices()
         {
+            services.Add(new ActiveUnitHandler());
             services.Add(new TileSelectionHandler());
         }
 
