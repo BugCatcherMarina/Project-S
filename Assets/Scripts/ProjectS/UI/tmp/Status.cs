@@ -1,57 +1,65 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using ProjectS.Map;
+using ProjectS.Services;
+using TMPro;
+using UnityEngine;
 
-namespace ProjectS.UI
+namespace ProjectS.UI.tmp
 {
     public class Status : MonoBehaviour
     {
-        private Tile selectedTile = null;
-        private Tile currentTile = null;
-        // Start is called before the first frame update
-        void Start()
-        {
-            Tile.OnClick += OnTileClicked;
-            Tile.OnPointerEnter += OnTilePointerEnter;
-            Tile.OnPointerExit += OnTilePointerExit;
+        private const string NULL_TILE_TEXT = "NULL";
 
+        private TMP_Text statusText;
+        
+        private void Start()
+        {
+            TileSelectionHandler.OnTileSelected += OnTileSelected;
+            TileSelectionHandler.OnTileHoverBegin += OnTileHoverBegin;
+            TileSelectionHandler.OnTileHoverEnd += OnTileHoverEnd;
+            
+            // Caching this once in Start for re-use.
+            statusText = GetComponent<TMP_Text>();
         }
 
-
-        void OnTileClicked(Tile tile) 
+        private void OnDestroy()
         {
-            selectedTile = tile;
-            UpdateText();
-        }
-        void OnTilePointerEnter(Tile tile)
-        {
-            currentTile = tile;
-            UpdateText();
-        }
-        void OnTilePointerExit(Tile tile)
-        {
-            currentTile = null;
-            UpdateText();
+            // Unsubscribing from these events to avoid memory leaks. 
+            TileSelectionHandler.OnTileSelected -= OnTileSelected;
+            TileSelectionHandler.OnTileHoverBegin -= OnTileHoverBegin;
+            TileSelectionHandler.OnTileHoverEnd -= OnTileHoverEnd;
         }
 
-
-        void UpdateText() 
+        private void OnTileSelected(Tile tile) 
         {
-            string _selectedTile = "NULL";
-            string _currentTile = "NULL";
-            if (selectedTile != null) _selectedTile = selectedTile.transform.name;
-            if (currentTile != null) _currentTile = currentTile.transform.name;
-
-
-
-            GetComponent<TextMeshProUGUI>().text = _selectedTile + "is selected. Hovering over " + _currentTile;
+            UpdateText(tile, TileSelectionHandler.HoveringTile);
         }
-        // Update is called once per frame
-        void Update()
-        {
 
+        private void OnTileHoverBegin(Tile tile)
+        {
+            UpdateText(TileSelectionHandler.SelectedTile, tile);
+        }
+
+        private void OnTileHoverEnd()
+        {
+            UpdateText(TileSelectionHandler.SelectedTile);
+        }
+
+        private void UpdateText(Tile selectedTile = null, Tile hoveringTile = null)
+        {
+            string selectedTileText = NULL_TILE_TEXT;
+            string hoveringTileText = NULL_TILE_TEXT;
+            
+            if (selectedTile != null)
+            {
+                selectedTileText = selectedTile.transform.name;
+            }
+
+            if (hoveringTile != null)
+            {
+                hoveringTileText = hoveringTile.transform.name;
+            }
+
+            statusText.text = selectedTileText + " is selected. Hovering over " + hoveringTileText;
         }
     }
 }
