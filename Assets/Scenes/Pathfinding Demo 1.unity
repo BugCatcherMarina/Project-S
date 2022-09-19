@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMap: {fileID: 11400000, guid: 5bc17a93bf9214654a8295a0072fc476, type: 2}
   tileParent: {fileID: 2055503786}
-  walkableTilePrefab: {fileID: 6393949092190968728, guid: 65044fb1f572c49899385a19489545fd,
+  grassTile: {fileID: 6393949092190968728, guid: 65044fb1f572c49899385a19489545fd,
     type: 3}
 --- !u!1 &763434532
 GameObject:

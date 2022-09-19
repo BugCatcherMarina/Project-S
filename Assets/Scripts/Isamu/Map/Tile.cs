@@ -5,8 +5,6 @@ namespace Isamu.Map
 {
     public class Tile : MonoBehaviour
     {
-        
-
         public static event Action<Tile> OnClick;
         public static event Action<Tile> OnPointerEnter;
         public static event Action<Tile> OnPointerExit;
@@ -17,16 +15,8 @@ namespace Isamu.Map
         private bool isSelected;
         private bool isUnderPointer;
 
-        Vector2Int _gridPosition = Vector2Int.one * -1;
-        public Vector2Int GridPosition { 
-            get {
-                return _gridPosition; 
-             }
-            set { 
-                _gridPosition = value;
-            }
-        }
-        
+        public Vector2Int GridPosition { get; private set; }
+
         private Material Material
         {
             get
@@ -54,6 +44,7 @@ namespace Isamu.Map
         public void SetIsUnderPointer(bool isTileUnderPointer)
         {
             isUnderPointer = isTileUnderPointer;
+            
             if (!isSelected)
             {
                 Material.color = isTileUnderPointer ? tileDefaults.HoverColor : tileDefaults.DefaultColor;
@@ -66,10 +57,11 @@ namespace Isamu.Map
             Material.color = isTileSelected ? tileDefaults.SelectedColor : tileDefaults.DefaultColor;
         }
 
-        private void Start()
+        public void Configure(Vector2Int gridPosition)
         {
+            GridPosition = gridPosition;
+            name = $"TIle {gridPosition}";
             Material.color = tileDefaults.DefaultColor;
-            name = "Tile " + GridPosition.ToString();
         }
     }
 }

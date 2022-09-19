@@ -1,6 +1,5 @@
+using Isamu.Map;
 using Isamu.Services;
-using ProjectS.Map;
-using ProjectS.Services;
 using TMPro;
 using UnityEngine;
 

@@ -51,7 +51,7 @@ namespace Isamu.Services
             OnTileHoverBegin?.Invoke(HoveringTile);
         }
         
-        private void HandleTilePointerExit(Tile tile)
+        private static void HandleTilePointerExit(Tile tile)
         {
             HoveringTile = null;
             tile.SetIsUnderPointer(false);

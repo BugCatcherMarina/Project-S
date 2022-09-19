@@ -49,7 +49,7 @@ namespace Isamu.Map
         {
             Vector3Int position = new Vector3Int(x, ProjectConsts.TILE_Y_POSITION, z);
             Tile tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
-            tile.GridPosition = new Vector2Int((int)tile.transform.position.x, (int)tile.transform.position.z);
+            tile.Configure(new Vector2Int(x, z));
             tiles.Add(tile);
         }
     }
