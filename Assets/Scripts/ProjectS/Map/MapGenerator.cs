@@ -49,6 +49,7 @@ namespace ProjectS.Map
         {
             Vector3Int position = new Vector3Int(x, 0, z);
             Tile tile = Instantiate(walkableTilePrefab, position, Quaternion.identity, tileParent);
+            tile.GridPosition = new Vector2Int((int)tile.transform.position.x, (int)tile.transform.position.z);
             tiles.Add(tile);
         }
     }
