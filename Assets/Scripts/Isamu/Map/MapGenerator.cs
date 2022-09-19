@@ -11,7 +11,7 @@ namespace Isamu.Map
         
         [SerializeField] private Tile grassTile;
 
-        private readonly List<Tile> tiles = new();
+        private readonly List<Tile> _tiles = new();
 
         /// <summary>
         /// A helper function to destroy and recreate the map from the inspector.
@@ -19,12 +19,12 @@ namespace Isamu.Map
         [ContextMenu("Recreate Map")]
         public void RecreateMap()
         {
-            for (int i = tiles.Count - 1; i >= 0; i--)
+            for (int i = _tiles.Count - 1; i >= 0; i--)
             {
-                Destroy(tiles[i].gameObject);
+                Destroy(_tiles[i].gameObject);
             }
             
-            tiles.Clear();
+            _tiles.Clear();
             
             Generate();
         }
@@ -50,7 +50,7 @@ namespace Isamu.Map
             Vector3Int position = new Vector3Int(x, ProjectConsts.TILE_Y_POSITION, z);
             Tile tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
             tile.Configure(new Vector2Int(x, z));
-            tiles.Add(tile);
+            _tiles.Add(tile);
         }
     }
 }

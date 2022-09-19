@@ -12,9 +12,12 @@ namespace Isamu.Map
         [SerializeField] private TileDefaults tileDefaults;
         [SerializeField] private MeshRenderer meshRenderer;
         
-        private bool isSelected;
-        private bool isUnderPointer;
+        private bool _isSelected;
+        private bool _isUnderPointer;
 
+        public int X => GridPosition.x;
+        public int Z => GridPosition.y;
+        
         public Vector2Int GridPosition { get; private set; }
 
         private Material Material
@@ -43,9 +46,9 @@ namespace Isamu.Map
 
         public void SetIsUnderPointer(bool isTileUnderPointer)
         {
-            isUnderPointer = isTileUnderPointer;
+            _isUnderPointer = isTileUnderPointer;
             
-            if (!isSelected)
+            if (!_isSelected)
             {
                 Material.color = isTileUnderPointer ? tileDefaults.HoverColor : tileDefaults.DefaultColor;
             }
@@ -53,7 +56,7 @@ namespace Isamu.Map
 
         public void SetIsSelected(bool isTileSelected)
         {
-            isSelected = isTileSelected;
+            _isSelected = isTileSelected;
             Material.color = isTileSelected ? tileDefaults.SelectedColor : tileDefaults.DefaultColor;
         }
 

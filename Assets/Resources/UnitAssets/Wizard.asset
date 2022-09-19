@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20b74d2dd3694cffa45f8dea0891c965, type: 3}
-  m_Name: PrototypeUnitAsset2 2
+  m_Name: Wizard
   m_EditorClassIdentifier: 
+  unitName: Wizard
   spawnPosition:
-    x: 2
-    z: 4
+    x: 5
+    z: 6
   stats:
     movement: 0
     speed: 3
+  actionAssets:
+  - {fileID: 11400000, guid: 02f4fb59382cc49969c6c081bd70b568, type: 2}

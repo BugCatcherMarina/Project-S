@@ -1,4 +1,5 @@
 using Isamu.Utils;
+using Isamu.Units.TurnActions;
 using System;
 using UnityEngine;
 
@@ -19,10 +20,16 @@ namespace Isamu.Units
         
         private const string NAME = nameof(UnitAsset);
 
+        public string UnitName => unitName;
         public SpawnPosition Spawn => spawnPosition;
         public UnitStats Stats => stats;
+        public ActionAsset[] ActionAssets => actionAssets;
         
+        [SerializeField] private string unitName;
         [SerializeField] private SpawnPosition spawnPosition;
         [SerializeField] private UnitStats stats;
+        
+        [Tooltip("All possible actions this unit can take on its turn.")]
+        [SerializeField] private ActionAsset[] actionAssets;
     }
 }

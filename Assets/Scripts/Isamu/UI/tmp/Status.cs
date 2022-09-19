@@ -9,7 +9,7 @@ namespace ProjectS.UI.tmp
     {
         private const string NULL_TILE_TEXT = "NULL";
 
-        private TMP_Text statusText;
+        private TMP_Text _statusText;
         
         private void Start()
         {
@@ -18,7 +18,7 @@ namespace ProjectS.UI.tmp
             TileSelectionHandler.OnTileHoverEnd += OnTileHoverEnd;
             
             // Caching this once in Start for re-use.
-            statusText = GetComponent<TMP_Text>();
+            _statusText = GetComponent<TMP_Text>();
         }
 
         private void OnDestroy()
@@ -59,7 +59,7 @@ namespace ProjectS.UI.tmp
                 hoveringTileText = hoveringTile.transform.name;
             }
 
-            statusText.text = selectedTileText + " is selected. Hovering over " + hoveringTileText;
+            _statusText.text = selectedTileText + " is selected. Hovering over " + hoveringTileText;
         }
     }
 }

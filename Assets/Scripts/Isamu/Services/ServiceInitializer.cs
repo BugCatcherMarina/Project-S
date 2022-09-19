@@ -18,6 +18,7 @@ namespace Isamu.Services
         {
             services.Add(new ActiveUnitHandler());
             services.Add(new TileSelectionHandler());
+            services.Add(new UnitActionHandler());
         }
 
         private static void HandleQuit()
