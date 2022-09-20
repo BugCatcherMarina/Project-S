@@ -1,7 +1,7 @@
 using Isamu.Utils;
 using System.Collections.Generic;
 using UnityEngine;
-using ProjectS.Map.Navigation;
+using Isamu.Map.Navigation;
 
 namespace Isamu.Map
 {

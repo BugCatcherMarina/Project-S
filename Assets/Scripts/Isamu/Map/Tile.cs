@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using ProjectS.Map.Navigation;
+using Isamu.Map.Navigation;
 
 namespace Isamu.Map
 {
@@ -35,14 +35,7 @@ namespace Isamu.Map
         }
 
         private Vector2Int _gridPosition = Vector2Int.one * -1;
-        public Vector2Int GridPosition { 
-            get {
-                return _gridPosition; 
-             }
-            set { 
-                _gridPosition = value;
-            }
-        }
+        
         
         private Material Material
         {

@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ProjectS.Map;
+using Isamu.Map;
 using UnityEditor;
 
-namespace ProjectS.Map.Navigation
+namespace Isamu.Map.Navigation
 {
     [RequireComponent(typeof(Tile))]
     public class NavigationNode : MonoBehaviour
