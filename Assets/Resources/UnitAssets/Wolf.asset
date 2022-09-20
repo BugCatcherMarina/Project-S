@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Wolf
   spawnPosition:
-    x: 4
-    z: 9
+    x: 7
+    z: 3
   stats:
     movement: 0
     speed: 5
