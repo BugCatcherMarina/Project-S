@@ -1,3 +1,4 @@
+using System;
 using Isamu.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ namespace Isamu.Map
 {
     public class MapGenerator : MonoBehaviour
     {
+        public static event Action<MapAsset> OnMapCreated;
+        
         [SerializeField] private MapAsset defaultMap;
         [SerializeField] private Transform tileParent;
         
@@ -32,6 +35,7 @@ namespace Isamu.Map
         private void Start()
         {
             Generate();
+            OnMapCreated?.Invoke(defaultMap);
         }
 
         private void Generate()
