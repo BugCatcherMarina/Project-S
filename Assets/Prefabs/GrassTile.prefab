@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1103484365533657293}
   - component: {fileID: 8551505284668444243}
   - component: {fileID: 264306464910578316}
+  - component: {fileID: 5308246336432490926}
   m_Layer: 0
   m_Name: Graphics
   m_TagString: Untagged
@@ -83,6 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5308246336432490926
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3974181808124655143}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4225449724713868223
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4225449724713868220}
   - component: {fileID: 6393949092190968728}
-  - component: {fileID: 9016553423934597371}
   - component: {fileID: 552070934787910185}
   m_Layer: 0
   m_Name: GrassTile
@@ -133,19 +146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileDefaults: {fileID: 11400000, guid: a93ebde03d7ea4374a92961ea8ce8312, type: 2}
   meshRenderer: {fileID: 264306464910578316}
---- !u!65 &9016553423934597371
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4225449724713868223}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &552070934787910185
 MonoBehaviour:
   m_ObjectHideFlags: 0
