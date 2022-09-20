@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectS.Map.Navigation;
 
 namespace ProjectS.Map
 {
@@ -36,6 +37,8 @@ namespace ProjectS.Map
 
         private void Generate()
         {
+            NavigationGrid.SetGridSize(new Vector2Int(defaultMap.Width, defaultMap.Depth));
+            
             for (int x = 0; x < defaultMap.Width; x++)
             {
                 for (int z = 0; z < defaultMap.Depth; z++)

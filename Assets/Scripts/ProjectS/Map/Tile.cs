@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ProjectS.Map.Navigation;
 
 namespace ProjectS.Map
 {
@@ -17,7 +18,20 @@ namespace ProjectS.Map
         private bool isSelected;
         private bool isUnderPointer;
 
-        Vector2Int _gridPosition = Vector2Int.one * -1;
+        [SerializeField] private NavigationNode _navigationNode;
+        public NavigationNode NavigationNode
+        {
+            get
+            {
+                return _navigationNode;
+            }
+            private set 
+            { 
+                _navigationNode = value;
+            }
+        }
+
+        private Vector2Int _gridPosition = Vector2Int.one * -1;
         public Vector2Int GridPosition { 
             get {
                 return _gridPosition; 
@@ -68,6 +82,7 @@ namespace ProjectS.Map
 
         private void Start()
         {
+            NavigationNode = GetComponent<NavigationNode>();
             Material.color = tileDefaults.DefaultColor;
             name = "Tile " + GridPosition.ToString();
         }
