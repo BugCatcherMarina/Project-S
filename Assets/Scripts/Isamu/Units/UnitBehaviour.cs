@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Isamu.Map;
+using Isamu.Map.Navigation;
 using Isamu.Services;
 using TMPro;
 using UnityEngine;
@@ -34,9 +36,22 @@ namespace Isamu.Units
         // Teleportation! lol. This also doesn't take into account a unit's Movement stat yet.
         public void MoveTo(Tile tile, Action onMoveComplete)
         {
+            NavigationGrid.HideNodeMarkers();
+
+
             Vector3 position = Transform.position;
+            //Gonna need some function for converting between grid and world coordinates
+            Vector2Int start = new Vector2Int((int)position.x, (int)position.z);
             position.x = tile.X;
             position.z = tile.Z;
+            Vector2Int finish = new Vector2Int((int)position.x, (int)position.z);
+
+            List<NavigationNode> path =  NavigationGrid.GetPath(start, finish);
+            foreach (NavigationNode node in path)
+            {
+                node.ShowMarker(true);
+            }
+
             Transform.position = position;
             onMoveComplete?.Invoke();
         }

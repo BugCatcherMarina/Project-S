@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3072457282973383822}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileDefaults: {fileID: 11400000, guid: a93ebde03d7ea4374a92961ea8ce8312, type: 2}
   meshRenderer: {fileID: 264306464910578316}
-  _navigationNode: {fileID: 0}
+  _navigationNode: {fileID: 8525096748366340972}
 --- !u!65 &9016553423934597371
 BoxCollider:
   m_ObjectHideFlags: 0

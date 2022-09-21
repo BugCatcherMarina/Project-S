@@ -1,12 +1,15 @@
-using Isamu.Utils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Isamu.Utils;
 using Isamu.Map.Navigation;
 
 namespace Isamu.Map
 {
     public class MapGenerator : MonoBehaviour
     {
+
+
         [SerializeField] private MapAsset defaultMap;
         [SerializeField] private Transform tileParent;
         
@@ -37,15 +40,17 @@ namespace Isamu.Map
 
         private void Generate()
         {
-            NavigationGrid.SetGridSize(new Vector2Int(defaultMap.Width, defaultMap.Depth));
-            
+            List<NavigationNode> nodes = new List<NavigationNode>();
+
             for (int x = 0; x < defaultMap.Width; x++)
             {
                 for (int z = 0; z < defaultMap.Depth; z++)
                 {
                     CreateTile(x, z);
+                    nodes.Add(_tiles[_tiles.Count - 1].NavigationNode);
                 }
             }
+            NavigationGrid.Initialize(new Vector2Int(defaultMap.Width, defaultMap.Depth), nodes);
         }
 
         private void CreateTile(int x, int z)

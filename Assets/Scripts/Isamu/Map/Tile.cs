@@ -81,7 +81,7 @@ namespace Isamu.Map
         {
             GridPosition = gridPosition;
             name = $"TIle {gridPosition}";
-            NavigationNode = GetComponent<NavigationNode>();
+            //NavigationNode = GetComponent<NavigationNode>();
             Material.color = tileDefaults.DefaultColor;
         }
     }

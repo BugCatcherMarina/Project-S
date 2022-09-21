@@ -23,9 +23,14 @@ namespace Isamu.Map.Navigation {
         private static NavigationNode[,] Grid;
         private static Vector2Int GridSize;
 
+        public static void Initialize(Vector2Int dimensions, List<NavigationNode> nodes) 
+        {
+            SetGridSize(dimensions);
+            foreach (NavigationNode node in nodes) AddNode(node);
+            LinkNodes();
+        }
         public static void SetGridSize(Vector2Int dimensions)
         {
-            NavigationNode.NavigationNodeCreated += OnNodeCreated;
 
             if (dimensions.x > 0 && dimensions.y > 0)
             {
@@ -39,12 +44,69 @@ namespace Isamu.Map.Navigation {
             }
         }
 
-        public static void OnNodeCreated(NavigationNode node) 
-        { 
-            AddNode(node);
-            //That's a crutch if've ever seen one. Couldn't have thought of anything better at the moment
-            if(node.GridPosition == GridSize - Vector2Int.one)
-                LinkNodes();
+
+        public static List<NavigationNode> GetPath(NavigationNode start, NavigationNode finish)
+        {
+            List<NavigationNode> path = new List<NavigationNode>();
+
+            NavigationNode[,] cameFrom = new NavigationNode[GridSize.x, GridSize.y];
+            int[,] costSoFar = new int[GridSize.x, GridSize.y];
+            for (int i = 0; i < GridSize.x; i++)
+                for (int j = 0; j < GridSize.y; j++)
+                    costSoFar[i, j] = int.MaxValue;
+            NavQueue frontier = new NavQueue();//
+            frontier.Enqueue(start, 0);//
+            cameFrom[start.X, start.Y] = null;
+            costSoFar[start.X, start.Y] = 0;
+
+            while (frontier.Count > 0)
+            {
+                NavigationNode node = frontier.Dequeue();
+                foreach (NavigationNode neighbour in node.Links.Keys)
+                {
+                    int new_cost = costSoFar[node.X, node.Y] + node.Links[neighbour];
+
+                    if (new_cost < costSoFar[neighbour.X, neighbour.Y])
+                    {
+                        costSoFar[neighbour.X, neighbour.Y] = new_cost;
+                        frontier.Enqueue(neighbour, new_cost);//
+                        cameFrom[neighbour.X, neighbour.Y] = node;
+
+                    }
+
+                    if (neighbour == finish)
+                    {
+                        path.Add(finish);
+                        NavigationNode previous = cameFrom[finish.X, finish.Y];
+                        while (costSoFar[previous.X, previous.Y] != 0)
+                        {
+                            path.Add(previous);
+                            previous = cameFrom[previous.X, previous.Y];
+
+                        }
+                        break;
+                    }
+
+                }
+            }
+            //Debug.Log(costSoFar[finish.X, finish.Y]);
+            return path;
+        }
+        public static List<NavigationNode> GetPath(Vector2Int start, Vector2Int finish)
+        {
+            List<NavigationNode> path = new List<NavigationNode>();
+            if (start.x < GridSize.x && start.x >= 0 &&
+                start.y < GridSize.y && start.y >= 0) 
+            {
+                if (finish.x < GridSize.x && finish.x >= 0 &&
+                finish.y < GridSize.y && finish.y >= 0) 
+                { 
+                    path = GetPath(Grid[start.x, start.y], Grid[finish.x, finish.y]);
+                }
+                else Debug.LogError("Wrong finish index");
+            }
+            else Debug.LogError("Wrong starting index");
+                return path;
         }
 
         public static void AddNode(NavigationNode node) 
@@ -112,6 +174,16 @@ namespace Isamu.Map.Navigation {
                         return;
                     }
                 }
+            }
+        }
+
+
+        //probably gonna change to something else later
+        public static void HideNodeMarkers() 
+        {
+            foreach (NavigationNode node in Grid) 
+            {
+                node.ShowMarker(false);
             }
         }
     }

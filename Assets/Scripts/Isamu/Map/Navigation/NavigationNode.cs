@@ -17,21 +17,36 @@ namespace Isamu.Map.Navigation
 
         private bool IsBlocked = false;
         private int _cost = 1;
-        public int Cost 
+        public int Cost
         {
             get { return _cost; }
             set { _cost = value; }
         }
-        
+
         public Vector2Int GridPosition
         {
             get
             {
-                return GetComponent<Tile>().GridPosition; 
+                return GetComponent<Tile>().GridPosition;
+            }
+        }
+        public int X
+        {
+            get
+            {
+                return GetComponent<Tile>().GridPosition.x;
+            } 
+        }
+        public int Y
+        {
+            get
+            {
+                return GetComponent<Tile>().GridPosition.y;
             }
         }
 
-        private Dictionary<NavigationNode, int> Links = new Dictionary<NavigationNode, int>();
+        private Dictionary<NavigationNode, int> _links = new Dictionary<NavigationNode, int>();
+        public Dictionary<NavigationNode, int> Links { get { return _links; } }
 
         public void ShowMarker(bool isVisible = true)
         {
@@ -51,11 +66,19 @@ namespace Isamu.Map.Navigation
                 }
             }
         }
-
-
-
-        private void Update()
+        public void UnlinkNode(NavigationNode node)
         {
+            if (Links.ContainsKey(node))
+            {
+                Links.Remove(node);
+                if (node.Links.ContainsKey(this))
+                {
+                    node.Links.Remove(this);
+                }
+            }
+        }
+
+        private void DrawDebug() {
             if (NavigationMarker == null) return;
             Vector3 pos_outbound = NavigationMarker.transform.position;
             Color color = Color.magenta;
@@ -67,11 +90,11 @@ namespace Isamu.Map.Navigation
             }
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void Update()
         {
-            NavigationNodeCreated?.Invoke(this);
+            DrawDebug();
         }
+
 
     }
 }
