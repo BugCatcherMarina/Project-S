@@ -3,7 +3,7 @@ using Isamu.Services;
 using TMPro;
 using UnityEngine;
 
-namespace ProjectS.UI.tmp
+namespace Isamu.UI.tmp
 {
     public class Status : MonoBehaviour
     {
