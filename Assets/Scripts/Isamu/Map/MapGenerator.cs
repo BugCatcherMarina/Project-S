@@ -9,11 +9,11 @@ namespace Isamu.Map
     public class MapGenerator : MonoBehaviour
     {
 
-
         [SerializeField] private MapAsset defaultMap;
         [SerializeField] private Transform tileParent;
         
         [SerializeField] private Tile grassTile;
+        [SerializeField] private Tile impassableTile;
 
         private readonly List<Tile> _tiles = new();
 
@@ -46,17 +46,30 @@ namespace Isamu.Map
             {
                 for (int z = 0; z < defaultMap.Depth; z++)
                 {
-                    CreateTile(x, z);
+                    CreateTile(x, z, defaultMap);
                     nodes.Add(_tiles[_tiles.Count - 1].NavigationNode);
                 }
             }
             NavigationGrid.Initialize(new Vector2Int(defaultMap.Width, defaultMap.Depth), nodes);
         }
 
-        private void CreateTile(int x, int z)
+        private void CreateTile(int x, int z, MapAsset mapData = null)
         {
             Vector3Int position = new Vector3Int(x, ProjectConsts.TILE_Y_POSITION, z);
-            Tile tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
+           
+            Tile tile = null;
+            if (mapData != null)
+            {
+                foreach (Vector2Int entry in mapData.ImpassableTiles) 
+                {
+                    if (entry == new Vector2Int(x, z)) 
+                    {
+                        tile = Instantiate(impassableTile, position, Quaternion.identity, tileParent);
+                        break;
+                    }
+                }
+            }
+            if (tile == null) tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
             tile.Configure(new Vector2Int(x, z));
             _tiles.Add(tile);
         }

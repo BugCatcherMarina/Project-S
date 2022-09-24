@@ -34,41 +34,56 @@ namespace Isamu.Map.Navigation
 
         public void Enqueue(NavigationNode node, int priority)
         {
-            list.Add(new NodeWithPriority(node, priority));
-            int i = Count - 1;
-
-            while (i > 0)
+            NodeWithPriority element = new NodeWithPriority(node, priority);    
+            for (int i = 0; i < Count; i++) 
             {
-                int p = (i - 1) / 2;
-                if (list[p].priority <= priority) break;
-
-                list[i] = list[p];
-                i = p;
+                if (list[i].priority <= priority ) 
+                {
+                    list.Insert(i, element);
+                    return;
+                }
             }
+            list.Add(element);
 
-            if (Count > 0) list[i].priority = priority;
+            //list.Add(new NodeWithPriority(node, priority));
+            //int i = Count - 1;
+
+
+            //while (i > 0)
+            //{
+            //    int p = (i - 1) / 2;
+            //    if (list[p].priority <= priority) break;
+
+            //    list[i] = list[p];
+            //    i = p;
+            //}
+
+            //if (Count > 0) list[i].priority = priority;
         }
 
         public NavigationNode Dequeue()
         {
-            NodeWithPriority min = Peek();
-            NodeWithPriority root = list[Count - 1];
-            list.RemoveAt(Count - 1);
+            var value = list[Count- 1];
+            list.RemoveAt(Count-1);
+            return value.node;
+            //NodeWithPriority min = Peek();
+            //NodeWithPriority root = list[Count - 1];
+            //list.RemoveAt(Count - 1);
 
-            int i = 0;
-            while (i * 2 + 1 < Count)
-            {
-                int a = i * 2 + 1;
-                int b = i * 2 + 2;
-                int c = b < Count && list[b].priority < list[a].priority ? b : a;
+            //int i = 0;
+            //while (i * 2 + 1 < Count)
+            //{
+            //    int a = i * 2 + 1;
+            //    int b = i * 2 + 2;
+            //    int c = b < Count && list[b].priority < list[a].priority ? b : a;
 
-                if (list[c].priority >= root.priority) break;
-                list[i] = list[c];
-                i = c;
-            }
+            //    if (list[c].priority >= root.priority) break;
+            //    list[i] = list[c];
+            //    i = c;
+            //}
 
-            if (Count > 0) list[i] = root;
-            return min.node;
+            //if (Count > 0) list[i] = root;
+            //return min.node;
         }
         private NodeWithPriority Peek()
         {

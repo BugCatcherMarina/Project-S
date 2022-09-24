@@ -45,15 +45,20 @@ namespace Isamu.Map.Navigation {
         }
 
 
-        public static List<NavigationNode> GetPath(NavigationNode start, NavigationNode finish)
+        public static List<NavigationNode> GetPath(NavigationNode start, NavigationNode finish,
+            bool goOverBlocked = false)
         {
+
+
             List<NavigationNode> path = new List<NavigationNode>();
 
             NavigationNode[,] cameFrom = new NavigationNode[GridSize.x, GridSize.y];
             int[,] costSoFar = new int[GridSize.x, GridSize.y];
             for (int i = 0; i < GridSize.x; i++)
                 for (int j = 0; j < GridSize.y; j++)
+                {
                     costSoFar[i, j] = int.MaxValue;
+                }
             NavQueue frontier = new NavQueue();//
             frontier.Enqueue(start, 0);//
             cameFrom[start.X, start.Y] = null;
@@ -62,37 +67,39 @@ namespace Isamu.Map.Navigation {
             while (frontier.Count > 0)
             {
                 NavigationNode node = frontier.Dequeue();
+
+                if (node == finish)
+                {
+                    path.Add(finish);
+                    NavigationNode previous = cameFrom[finish.X, finish.Y];
+                    while (costSoFar[previous.X, previous.Y] != 0)
+                    {
+                        path.Add(previous);
+                        previous = cameFrom[previous.X, previous.Y];
+
+                    }
+                    break;
+                }
+
                 foreach (NavigationNode neighbour in node.Links.Keys)
                 {
                     int new_cost = costSoFar[node.X, node.Y] + node.Links[neighbour];
 
-                    if (new_cost < costSoFar[neighbour.X, neighbour.Y])
+                    if (new_cost < costSoFar[neighbour.X, neighbour.Y] && 
+                       (!neighbour.IsBlocked || goOverBlocked))
                     {
                         costSoFar[neighbour.X, neighbour.Y] = new_cost;
                         frontier.Enqueue(neighbour, new_cost);//
                         cameFrom[neighbour.X, neighbour.Y] = node;
-
                     }
-
-                    if (neighbour == finish)
-                    {
-                        path.Add(finish);
-                        NavigationNode previous = cameFrom[finish.X, finish.Y];
-                        while (costSoFar[previous.X, previous.Y] != 0)
-                        {
-                            path.Add(previous);
-                            previous = cameFrom[previous.X, previous.Y];
-
-                        }
-                        break;
-                    }
-
                 }
             }
+
             //Debug.Log(costSoFar[finish.X, finish.Y]);
             return path;
         }
-        public static List<NavigationNode> GetPath(Vector2Int start, Vector2Int finish)
+        public static List<NavigationNode> GetPath(Vector2Int start, Vector2Int finish,
+            bool goOverBlocked = false)
         {
             List<NavigationNode> path = new List<NavigationNode>();
             if (start.x < GridSize.x && start.x >= 0 &&
@@ -101,12 +108,12 @@ namespace Isamu.Map.Navigation {
                 if (finish.x < GridSize.x && finish.x >= 0 &&
                 finish.y < GridSize.y && finish.y >= 0) 
                 { 
-                    path = GetPath(Grid[start.x, start.y], Grid[finish.x, finish.y]);
+                    path = GetPath(Grid[start.x, start.y], Grid[finish.x, finish.y], goOverBlocked);
                 }
                 else Debug.LogError("Wrong finish index");
             }
             else Debug.LogError("Wrong starting index");
-                return path;
+            return path;
         }
 
         public static void AddNode(NavigationNode node) 

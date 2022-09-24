@@ -14,8 +14,16 @@ namespace Isamu.Map.Navigation
 
         [SerializeField] private GameObject NavigationMarker;
 
+        [SerializeField] 
+        private bool _isBlocked = false;
 
-        private bool IsBlocked = false;
+        public bool IsBlocked 
+        { 
+            set { _isBlocked = value; }
+            get { return _isBlocked; }
+        }
+
+
         private int _cost = 1;
         public int Cost
         {
@@ -88,6 +96,21 @@ namespace Isamu.Map.Navigation
                 Vector3 pos_inbound = node.NavigationMarker.transform.position;
                 Debug.DrawLine(pos_inbound, pos_outbound, color);
             }
+        }
+
+        private void OnDrawGizmoss()
+        {
+            if (NavigationMarker == null) return;
+            Vector3 position = NavigationMarker.transform.position;
+            if (IsBlocked)
+            {
+                Gizmos.color = Color.red;
+            }
+            else
+            {
+                Gizmos.color = Color.green;
+            }
+            Gizmos.DrawSphere(position, 0.4f);
         }
 
         private void Update()
