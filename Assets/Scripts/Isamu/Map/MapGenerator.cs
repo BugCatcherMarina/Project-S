@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Isamu.Utils;
 using Isamu.Map.Navigation;
-using Isamu.Services;
 
 namespace Isamu.Map
 {
@@ -48,7 +47,7 @@ namespace Isamu.Map
             {
                 for (int z = 0; z < defaultMap.Depth; z++)
                 {
-                    Tile tile = CreateTile(x, z, defaultMap);
+                    Tile tile = CreateTile(x, z);
                     nodes.Add(tile.NavigationNode);
                 }
             }
@@ -56,34 +55,42 @@ namespace Isamu.Map
             OnMapGenerated?.Invoke(defaultMap, nodes);
         }
 
-        private Tile CreateTile(int x, int z, MapAsset mapData = null)
+        private Tile CreateTile(int x, int z)
         {
             Vector3Int position = new Vector3Int(x, ProjectConsts.TILE_Y_POSITION, z);
-           
-            Tile tile = null;
-            
-            if (mapData != null)
-            {
-                foreach (Vector2Int entry in mapData.ImpassableTiles)
-                {
-                    if (entry != new Vector2Int(x, z))
-                    {
-                        continue;
-                    }
+            Vector2Int gridPos = new Vector2Int(x, z);
 
-                    tile = Instantiate(impassableTile, position, Quaternion.identity, tileParent);
-                    break;
-                }
-            }
+            Tile prefab = GetPrefabForCoordinate(gridPos);
+            Tile tile = Instantiate(prefab, position, Quaternion.identity, tileParent);
+            tile.Configure(gridPos);
             
-            if (tile == null)
-            {
-                tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
-            }
-
-            tile.Configure(new Vector2Int(x, z));
             _tiles.Add(tile);
             return tile;
+        }
+
+        private Tile GetPrefabForCoordinate(Vector2Int coord)
+        {
+            int impassableCount = defaultMap.ImpassableTiles.Count;
+
+            Debug.Log($"imp count: {impassableCount}");
+            
+            if (impassableCount == 0)
+            {
+                return grassTile;
+            }
+
+            for (int i = 0; i < impassableCount; i++)
+            {
+                Vector2Int impassableCoord = defaultMap.ImpassableTiles[i];
+                Debug.Log($"imp coord: {impassableCoord}");
+                Debug.Log($"this coord: {coord}");
+                if (impassableCoord.x == coord.x && impassableCoord.y == coord.y)
+                {
+                    return impassableTile;
+                }
+            }
+
+            return grassTile;
         }
     }
 }
