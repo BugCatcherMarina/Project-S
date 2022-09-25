@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 552070934787910185}
   - component: {fileID: 8525096748366340972}
   m_Layer: 0
-  m_Name: Impassable TIle
+  m_Name: ImpassableTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
