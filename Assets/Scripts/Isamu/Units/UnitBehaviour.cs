@@ -81,6 +81,29 @@ namespace Isamu.Units
 
             EnterNode();
 
+            NavigationGrid.TilesToState(TileStates.Unavailable);
+            var (nodes, costs) = NavigationGrid.GetNodesWithinCost(currentNode, UnitAsset.Stats.Movement);
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                NavigationNode node = nodes[i];
+                int cost = costs[i];
+                Tile _tile = node.GetComponent<Tile>();
+                if (cost < UnitAsset.Stats.Movement)
+                {
+                    _tile.SetState(TileStates.Available);
+                }
+                if (cost == UnitAsset.Stats.Movement)
+                {
+                    _tile.SetState(TileStates.Risky);
+                }
+                if (cost == 0)
+                {
+                    _tile.SetState(TileStates.Source);
+                }
+            }
+
+
+
             onMoveComplete?.Invoke();
         }
 
@@ -112,6 +135,8 @@ namespace Isamu.Units
         private void HandleUnitActivate(UnitBehaviour unitBehaviour)
         {
             unitActiveSprite.SetActive(unitBehaviour == this);
+
+           
         }
     }
 }

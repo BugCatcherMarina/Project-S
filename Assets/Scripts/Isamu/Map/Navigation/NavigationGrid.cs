@@ -48,9 +48,14 @@ namespace Isamu.Map.Navigation {
         public static List<NavigationNode> GetPath(NavigationNode start, NavigationNode finish,
             bool goOverBlocked = false)
         {
-
+            Debug.Assert(start != null);
+            Debug.Assert(finish != null);
 
             List<NavigationNode> path = new List<NavigationNode>();
+            
+            if(start == finish) return path;
+            if(finish.IsBlocked && !goOverBlocked) return path;
+
 
             NavigationNode[,] cameFrom = new NavigationNode[GridSize.x, GridSize.y];
             int[,] costSoFar = new int[GridSize.x, GridSize.y];
@@ -71,7 +76,8 @@ namespace Isamu.Map.Navigation {
                 if (node == finish)
                 {
                     path.Add(finish);
-                    NavigationNode previous = cameFrom[finish.X, finish.Y];
+                    NavigationNode previous = cameFrom[node.X, node.Y];
+                    Debug.Assert(previous != null, "BAD");
                     while (costSoFar[previous.X, previous.Y] != 0)
                     {
                         path.Add(previous);
@@ -116,6 +122,62 @@ namespace Isamu.Map.Navigation {
             return path;
         }
 
+        //returning costs as well as a node list can be handy for highlighting tiles in different colors.
+        //i.e. unit can move to the spot and still be able to attack and unit moving too far and not being able to
+        public static (List<NavigationNode> nodes, List<int> costs) GetNodesWithinCost(NavigationNode start,
+            int max_cost = 1, bool goOverBlocked = false) 
+        {
+            Debug.Assert(start != null);
+            Debug.Assert(max_cost >= 1);
+
+            List<NavigationNode> nodes = new List<NavigationNode>();
+            List<int> costs = new List<int>();
+
+
+            NavigationNode[,] cameFrom = new NavigationNode[GridSize.x, GridSize.y];
+            int[,] costSoFar = new int[GridSize.x, GridSize.y];
+            for (int i = 0; i < GridSize.x; i++)
+                for (int j = 0; j < GridSize.y; j++)
+                {
+                    costSoFar[i, j] = int.MaxValue;
+                }
+            NavQueue frontier = new NavQueue();//
+            frontier.Enqueue(start, 0);//
+            cameFrom[start.X, start.Y] = null;
+            costSoFar[start.X, start.Y] = 0;
+
+            while (frontier.Count > 0)
+            {
+                NavigationNode node = frontier.Dequeue();
+
+                foreach (NavigationNode neighbour in node.Links.Keys)
+                {
+                    int new_cost = costSoFar[node.X, node.Y] + node.Links[neighbour];
+
+                    if (new_cost < costSoFar[neighbour.X, neighbour.Y] &&
+                       (!neighbour.IsBlocked || goOverBlocked)&&
+                       new_cost <= max_cost)
+                    {
+                        costSoFar[neighbour.X, neighbour.Y] = new_cost;
+                        frontier.Enqueue(neighbour, new_cost);//
+                        cameFrom[neighbour.X, neighbour.Y] = node;
+                    }
+                }
+            }
+
+            //potential place for optimization
+            for (int i = 0; i < GridSize.x; i++)
+                for (int j = 0; j < GridSize.y; j++)
+                {
+                    if (costSoFar[i, j] <= max_cost) 
+                    {
+                        nodes.Add(Grid[i, j]);
+                        costs.Add(costSoFar[i, j]);
+                    }
+                }
+
+            return (nodes,costs);
+        }
         public static void AddNode(NavigationNode node) 
         {
             if (node == null)
@@ -191,6 +253,14 @@ namespace Isamu.Map.Navigation {
             foreach (NavigationNode node in Grid) 
             {
                 node.ShowMarker(false);
+            }
+        }
+
+        public static void TilesToState(TileStates State)
+        {
+            foreach (NavigationNode node in Grid)
+            {
+                node.GetComponent<Tile>().SetState(State);
             }
         }
     }
