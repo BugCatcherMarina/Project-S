@@ -19,12 +19,14 @@ namespace Isamu.Services
         {
             MapGenerator.OnMapGenerated += HandleMapGenerated;
             UnitBehaviour.OnPathRequested += HandlePathRequested;
+            UnitBehaviour.OnStartNodeRequested += HandleStartNodeRequested;
         }
         
         public override void Disable()
         {
             MapGenerator.OnMapGenerated -= HandleMapGenerated;
             UnitBehaviour.OnPathRequested -= HandlePathRequested;
+            UnitBehaviour.OnStartNodeRequested -= HandleStartNodeRequested;
         }
 
         private void HandleMapGenerated(MapAsset map, List<NavigationNode> nodes)
@@ -35,6 +37,11 @@ namespace Isamu.Services
         private void HandlePathRequested(PathRequestInput input, Action<PathRequestResult> callback)
         {
             callback(new PathRequestResult(GetPath(input.From, input.To)));
+        }
+
+        private void HandleStartNodeRequested(UnitAsset.SpawnPosition spawn, Action<NavigationNode> callback)
+        {
+            callback?.Invoke(_grid[spawn.X, spawn.Z]);
         }
 
         private void Initialize(int width, int depth, List<NavigationNode> nodes) 
@@ -53,7 +60,7 @@ namespace Isamu.Services
         {
             if (width <= 0 || depth <= 0)
             {
-                Debug.LogError("Invalid Grid Size");
+                Debug.LogError($"Invalid Grid Size. Width: {width}, Depth: {depth}.");
                 return;
             }
 
