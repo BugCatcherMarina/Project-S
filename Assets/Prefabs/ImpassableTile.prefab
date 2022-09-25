@@ -158,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7075ea093356846e5b039dbfdf3661c2, type: 2}
+  - {fileID: 2100000, guid: 9126fb227163f4a768343289a244ba52, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -229,9 +229,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1750838d854543a4aaab2fa2332bdbd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileDefaults: {fileID: 11400000, guid: a93ebde03d7ea4374a92961ea8ce8312, type: 2}
+  tileDefaults: {fileID: 11400000, guid: 1aa45c434acd64e0e93be2df914ffcaa, type: 2}
   meshRenderer: {fileID: 264306464910578316}
-  _navigationNode: {fileID: 8525096748366340972}
+  navigationNode: {fileID: 8525096748366340972}
 --- !u!65 &9016553423934597371
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -315,3 +315,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navigationMarker: {fileID: 3072457282973383822}
+  isBlocked: 1

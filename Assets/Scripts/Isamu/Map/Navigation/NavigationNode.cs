@@ -9,8 +9,12 @@ namespace Isamu.Map.Navigation
         private const float DEBUG_SPHERE_RADIUS = 0.4f;
         private readonly Color _gizmosBlockedColor = Color.red;
         private readonly Color _gizmosDefaultColor = Color.green;
-        
-        public bool IsBlocked { get; set; }
+
+        public bool IsBlocked
+        {
+            get => isBlocked;
+            set => isBlocked = value;
+        }
 
         public static int Cost => 1;
 
@@ -20,6 +24,8 @@ namespace Isamu.Map.Navigation
         public Dictionary<NavigationNode, int> Links { get; } = new();
 
         [SerializeField] private GameObject navigationMarker;
+        [SerializeField] private bool isBlocked;
+        
         private Tile _tile;
         private MeshRenderer _navMarkerRend;
 
