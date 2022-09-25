@@ -14,29 +14,12 @@ namespace Isamu.Map
         [SerializeField] private MeshRenderer meshRenderer;
         
         private bool _isSelected;
-        private bool _isUnderPointer;
-
-        public int X => GridPosition.x;
-        public int Z => GridPosition.y;
         
         public Vector2Int GridPosition { get; private set; }
 
-        [SerializeField] private NavigationNode _navigationNode;
-        public NavigationNode NavigationNode
-        {
-            get
-            {
-                return _navigationNode;
-            }
-            private set 
-            { 
-                _navigationNode = value;
-            }
-        }
+        public NavigationNode NavigationNode => navigationNode;
+        [SerializeField] private NavigationNode navigationNode;
 
-        private Vector2Int _gridPosition = Vector2Int.one * -1;
-        
-        
         private Material Material
         {
             get
@@ -63,8 +46,6 @@ namespace Isamu.Map
 
         public void SetIsUnderPointer(bool isTileUnderPointer)
         {
-            _isUnderPointer = isTileUnderPointer;
-            
             if (!_isSelected)
             {
                 Material.color = isTileUnderPointer ? tileDefaults.HoverColor : tileDefaults.DefaultColor;
@@ -80,8 +61,7 @@ namespace Isamu.Map
         public void Configure(Vector2Int gridPosition)
         {
             GridPosition = gridPosition;
-            name = $"TIle {gridPosition}";
-            //NavigationNode = GetComponent<NavigationNode>();
+            name = $"Tile {gridPosition}";
             Material.color = tileDefaults.DefaultColor;
         }
     }

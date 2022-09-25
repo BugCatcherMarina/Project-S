@@ -21,7 +21,7 @@ namespace Isamu.Units.TurnActions
         private void HandleTileSelected(Tile tile)
         {
             TileSelectionHandler.OnTileSelected -= HandleTileSelected;
-            _unit.MoveTo(tile, HandleActionComplete);
+            _unit.MoveToTile(tile, HandleActionComplete);
         }
     }
 }
