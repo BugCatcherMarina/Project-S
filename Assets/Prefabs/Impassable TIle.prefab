@@ -158,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9126fb227163f4a768343289a244ba52, type: 2}
+  - {fileID: 2100000, guid: 7075ea093356846e5b039dbfdf3661c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 552070934787910185}
   - component: {fileID: 8525096748366340972}
   m_Layer: 0
-  m_Name: GrassTile
+  m_Name: Impassable TIle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,3 +315,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NavigationMarker: {fileID: 3072457282973383822}
+  _isBlocked: 1

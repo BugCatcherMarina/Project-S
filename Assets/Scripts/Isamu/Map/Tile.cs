@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Isamu.Map.Navigation;
 
 namespace Isamu.Map
 {
@@ -20,6 +21,22 @@ namespace Isamu.Map
         
         public Vector2Int GridPosition { get; private set; }
 
+        [SerializeField] private NavigationNode _navigationNode;
+        public NavigationNode NavigationNode
+        {
+            get
+            {
+                return _navigationNode;
+            }
+            private set 
+            { 
+                _navigationNode = value;
+            }
+        }
+
+        private Vector2Int _gridPosition = Vector2Int.one * -1;
+        
+        
         private Material Material
         {
             get
@@ -64,6 +81,7 @@ namespace Isamu.Map
         {
             GridPosition = gridPosition;
             name = $"TIle {gridPosition}";
+            //NavigationNode = GetComponent<NavigationNode>();
             Material.color = tileDefaults.DefaultColor;
         }
     }

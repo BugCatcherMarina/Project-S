@@ -396,6 +396,8 @@ MonoBehaviour:
   tileParent: {fileID: 2055503786}
   grassTile: {fileID: 6393949092190968728, guid: 65044fb1f572c49899385a19489545fd,
     type: 3}
+  impassableTile: {fileID: 6393949092190968728, guid: 266a9f2584d83714385441cedccdf4bb,
+    type: 3}
 --- !u!4 &844006719
 Transform:
   m_ObjectHideFlags: 0
