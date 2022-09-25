@@ -314,5 +314,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b406d0eb0af4f274d9db6094dadb9de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NavigationMarker: {fileID: 3072457282973383822}
-  _isBlocked: 1
+  navigationMarker: {fileID: 3072457282973383822}

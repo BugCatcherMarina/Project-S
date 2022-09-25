@@ -10,7 +10,8 @@ namespace Isamu.Units
 {
     public class UnitBehaviour : MonoBehaviour
     {
-
+        public static event Action<PathRequestInput, Action<PathRequestResult>> OnPathRequested;
+        
         public UnitAsset UnitAsset { get; private set; }
 
         [SerializeField] private GameObject unitActiveSprite;
@@ -26,29 +27,25 @@ namespace Isamu.Units
         }
 
         private Transform _transform;
-
-        private NavigationNode currentNode;
-
-
+        private NavigationNode _currentNode;
+        private Action _onActionComplete;
+        
         private void UpdateCurrentNode() 
         {
-
             Vector3 start = transform.position;
             Vector3 direction = Vector3.down;
-            RaycastHit hit;
-            Physics.Raycast(start, direction, out hit);
+            Physics.Raycast(start, direction, out var hit);
 
             NavigationNode node = hit.collider.gameObject.GetComponent<NavigationNode>();
             if (node != null)
             {
-                currentNode = node;
+                _currentNode = node;
             }
             else
             {
-                currentNode = null;
+                _currentNode = null;
                 Debug.Log("That's odd there is no Navigation Node Under Me");
             }
-
         }
 
         public void Configure(UnitAsset unitAsset)
@@ -56,54 +53,80 @@ namespace Isamu.Units
             UnitAsset = unitAsset;
             unitNameText.text = unitAsset.UnitName;
         }
-        
-        // Obviously this should be replaced with pathfinding eventually -- this is just temporary.
-        // Teleportation! lol. This also doesn't take into account a unit's Movement stat yet.
-        public void MoveTo(Tile tile, Action onMoveComplete)
+
+        public void MoveToTile(Tile targetTile, Action onMoveComplete)
         {
-            LeaveCurrentNode();
+            _onActionComplete = onMoveComplete;
+            OnPathRequested?.Invoke(new PathRequestInput(_currentNode, targetTile.NavigationNode), MoveUnitAlongPath);
+        }
 
-            NavigationGrid.HideNodeMarkers();
+        private void MoveUnitAlongPath(PathRequestResult path)
+        {
+            const float moveDuration = 1f;
 
-
-            Vector3 position = Transform.position;
-            position.x = tile.X;
-            position.z = tile.Z;
-            Vector2Int finish = new Vector2Int((int)position.x, (int)position.z);
-
-            List<NavigationNode> path =  NavigationGrid.GetPath(currentNode, tile.NavigationNode);
-            foreach (NavigationNode node in path)
+            for (int i = 0; i < path.NodeCount; i++)
             {
-                node.ShowMarker(true);
+                NavigationNode nextNode = path.Nodes[i];
+                nextNode.ShowMarker(true);
+
+                float moveTime = 0f;
+
+                while (moveTime < moveDuration)
+                {
+                    Vector3 pos = Transform.position;
+                    float t = moveTime / moveDuration;
+                    float newX = Mathf.Lerp(pos.x, nextNode.X, t);
+                    float newZ = Mathf.Lerp(pos.z, nextNode.Z, t);
+                    pos.x = newX;
+                    pos.z = newZ;
+                    Transform.position = pos;
+                    
+                    moveTime += Time.deltaTime;
+                }
+
+                if (i != path.NodeCount - 1)
+                {
+                    continue;
+                }
+
+                if (_currentNode != null)
+                {
+                    _currentNode.IsBlocked = false;
+                }
+                    
+                _currentNode = nextNode;
+                _currentNode.IsBlocked = true;
             }
-
-            Transform.position = position;
-
-            EnterNode();
-
-            onMoveComplete?.Invoke();
+            
+            _onActionComplete?.Invoke();
         }
 
-
-        public void LeaveCurrentNode() 
+        private void LeaveCurrentNode() 
         {
-            Debug.Assert(currentNode != null, "Unit is not attached to a navigation node");
-            currentNode.IsBlocked = false;
+            Debug.Assert(_currentNode != null, "Unit is not attached to a navigation node");
+            _currentNode.IsBlocked = false;
         }
-        public void EnterNode()
+
+        private void EnterNode()
         {
             UpdateCurrentNode();
-            if (currentNode != null) currentNode.IsBlocked = true;
+            
+            if (_currentNode != null)
+            {
+                _currentNode.IsBlocked = true;
+            }
         }
+
         private void Awake()
         {
             ActiveUnitHandler.OnUnitActivate += HandleUnitActivate;
         }
+
         private void Start()
         {
             EnterNode();
-            Debug.Log(currentNode.GridPosition);
         }
+
         private void OnDestroy()
         {
             ActiveUnitHandler.OnUnitActivate -= HandleUnitActivate;
