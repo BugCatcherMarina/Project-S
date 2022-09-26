@@ -72,8 +72,6 @@ namespace Isamu.Map
         {
             int impassableCount = defaultMap.ImpassableTiles.Count;
 
-            Debug.Log($"imp count: {impassableCount}");
-            
             if (impassableCount == 0)
             {
                 return grassTile;
@@ -82,8 +80,7 @@ namespace Isamu.Map
             for (int i = 0; i < impassableCount; i++)
             {
                 Vector2Int impassableCoord = defaultMap.ImpassableTiles[i];
-                Debug.Log($"imp coord: {impassableCoord}");
-                Debug.Log($"this coord: {coord}");
+                
                 if (impassableCoord.x == coord.x && impassableCoord.y == coord.y)
                 {
                     return impassableTile;
