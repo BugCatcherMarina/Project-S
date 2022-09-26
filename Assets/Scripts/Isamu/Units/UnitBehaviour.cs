@@ -27,8 +27,8 @@ namespace Isamu.Units
 
         private Transform _transform;
 
-        private NavigationNode currentNode;
-
+        private NavigationNode _currentNode;
+        public NavigationNode CurrentNode { get { return _currentNode; } }
 
         private void UpdateCurrentNode() 
         {
@@ -41,11 +41,11 @@ namespace Isamu.Units
             NavigationNode node = hit.collider.gameObject.GetComponent<NavigationNode>();
             if (node != null)
             {
-                currentNode = node;
+                _currentNode = node;
             }
             else
             {
-                currentNode = null;
+                _currentNode = null;
                 Debug.Log("That's odd there is no Navigation Node Under Me");
             }
 
@@ -71,7 +71,7 @@ namespace Isamu.Units
             position.z = tile.Z;
             Vector2Int finish = new Vector2Int((int)position.x, (int)position.z);
 
-            List<NavigationNode> path =  NavigationGrid.GetPath(currentNode, tile.NavigationNode);
+            List<NavigationNode> path =  NavigationGrid.GetPath(_currentNode, tile.NavigationNode);
             foreach (NavigationNode node in path)
             {
                 node.ShowMarker(true);
@@ -81,28 +81,6 @@ namespace Isamu.Units
 
             EnterNode();
 
-            NavigationGrid.TilesToState(TileStates.Unavailable);
-            var (nodes, costs) = NavigationGrid.GetNodesWithinCost(currentNode, UnitAsset.Stats.Movement);
-            for (int i = 0; i < nodes.Count; i++)
-            {
-                NavigationNode node = nodes[i];
-                int cost = costs[i];
-                Tile _tile = node.GetComponent<Tile>();
-                if (cost < UnitAsset.Stats.Movement)
-                {
-                    _tile.SetState(TileStates.Available);
-                }
-                if (cost == UnitAsset.Stats.Movement)
-                {
-                    _tile.SetState(TileStates.Risky);
-                }
-                if (cost == 0)
-                {
-                    _tile.SetState(TileStates.Source);
-                }
-            }
-
-
 
             onMoveComplete?.Invoke();
         }
@@ -110,13 +88,13 @@ namespace Isamu.Units
 
         public void LeaveCurrentNode() 
         {
-            Debug.Assert(currentNode != null, "Unit is not attached to a navigation node");
-            currentNode.IsBlocked = false;
+            Debug.Assert(_currentNode != null, "Unit is not attached to a navigation node");
+            _currentNode.IsBlocked = false;
         }
         public void EnterNode()
         {
             UpdateCurrentNode();
-            if (currentNode != null) currentNode.IsBlocked = true;
+            if (_currentNode != null) _currentNode.IsBlocked = true;
         }
         private void Awake()
         {
@@ -125,7 +103,7 @@ namespace Isamu.Units
         private void Start()
         {
             EnterNode();
-            Debug.Log(currentNode.GridPosition);
+            Debug.Log(_currentNode.GridPosition);
         }
         private void OnDestroy()
         {

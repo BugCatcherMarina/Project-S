@@ -119,7 +119,9 @@ namespace Isamu.Map
         public void SetIsSelected(bool isTileSelected)
         {
             _isSelected = isTileSelected;
-            Material.color = isTileSelected ? tileDefaults.SelectedColor : PickColor();
+            Material.color = PickColor();
+            if (State != TileStates.Unavailable && isTileSelected)
+                Material.color = tileDefaults.SelectedColor;
         }
 
         public void Configure(Vector2Int gridPosition)
