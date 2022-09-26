@@ -11,5 +11,12 @@ namespace Isamu.Utils
                    transform.up * translation.y +
                    transform.forward * translation.z;
         }
+
+        public static void SetX(this Transform transform, float x)
+        {
+            Vector3 pos = transform.position;
+            pos.x = x;
+            transform.position = pos;
+        }
     }
 }

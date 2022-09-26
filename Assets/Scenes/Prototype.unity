@@ -512,14 +512,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853082425}
-  m_LocalRotation: {x: 0.45056593, y: 0, z: 0, w: 0.8927432}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2141629244}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 53.56, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &853082429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,15 +752,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141629243}
-  m_LocalRotation: {x: 0, y: -0.377356, z: 0, w: 0.92606825}
-  m_LocalPosition: {x: 0, y: 6.45, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.5, y: 8, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 853082428}
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: -44.34, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2141629245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,8 +774,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controllerTransform: {fileID: 2141629244}
-  moveSpeed: 8
-  zoomSpeed: 10
-  screenBorderThickness: 20
-  screenYLimits: {x: 4, y: 12}
-  screenLimitBuffer: 1
+  moveSpeed: 7
+  zoomSpeed: 9
+  screenBorderThickness: 15
+  screenYLimits: {x: 4, y: 10}
+  screenLimitBuffers: {x: 1, y: 0, z: 2, w: -2}
+  screenXLimits: {x: 0, y: 0}
+  screenZLimits: {x: 0, y: 0}
