@@ -158,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9126fb227163f4a768343289a244ba52, type: 2}
+  - {fileID: 2100000, guid: ba24074050ec5484c87d4e382401828a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1750838d854543a4aaab2fa2332bdbd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileDefaults: {fileID: 11400000, guid: 1aa45c434acd64e0e93be2df914ffcaa, type: 2}
+  tileDefaults: {fileID: 11400000, guid: 9c666409658ef4d5089a34835dc04d5d, type: 2}
   meshRenderer: {fileID: 264306464910578316}
   navigationNode: {fileID: 8525096748366340972}
 --- !u!65 &9016553423934597371
