@@ -15,10 +15,9 @@ MonoBehaviour:
   unitName: Wizard
   spawnPosition:
     x: 5
-    z: 7
+    z: 6
   stats:
     movement: 2
     speed: 3
-  tileMoveDuration: 0.5
   actionAssets:
   - {fileID: 11400000, guid: 02f4fb59382cc49969c6c081bd70b568, type: 2}

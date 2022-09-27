@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileDefaults: {fileID: 11400000, guid: a93ebde03d7ea4374a92961ea8ce8312, type: 2}
   meshRenderer: {fileID: 264306464910578316}
-  navigationNode: {fileID: 8525096748366340972}
+  _navigationNode: {fileID: 8525096748366340972}
 --- !u!65 &9016553423934597371
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -314,4 +314,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b406d0eb0af4f274d9db6094dadb9de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navigationMarker: {fileID: 3072457282973383822}
+  NavigationMarker: {fileID: 3072457282973383822}

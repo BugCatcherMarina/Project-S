@@ -8,7 +8,6 @@ namespace Isamu.Map
 {
     public class MapGenerator : MonoBehaviour
     {
-        public static event Action<MapAsset, List<NavigationNode>> OnMapGenerated; 
 
         [SerializeField] private MapAsset defaultMap;
         [SerializeField] private Transform tileParent;
@@ -47,50 +46,32 @@ namespace Isamu.Map
             {
                 for (int z = 0; z < defaultMap.Depth; z++)
                 {
-                    Tile tile = CreateTile(x, z);
-                    nodes.Add(tile.NavigationNode);
+                    CreateTile(x, z, defaultMap);
+                    nodes.Add(_tiles[_tiles.Count - 1].NavigationNode);
                 }
             }
-            
-            OnMapGenerated?.Invoke(defaultMap, nodes);
+            NavigationGrid.Initialize(new Vector2Int(defaultMap.Width, defaultMap.Depth), nodes);
         }
 
-        private Tile CreateTile(int x, int z)
+        private void CreateTile(int x, int z, MapAsset mapData = null)
         {
             Vector3Int position = new Vector3Int(x, ProjectConsts.TILE_Y_POSITION, z);
-            Vector2Int gridPos = new Vector2Int(x, z);
-
-            Tile prefab = GetPrefabForCoordinate(gridPos);
-            Tile tile = Instantiate(prefab, position, Quaternion.identity, tileParent);
-            tile.Configure(gridPos);
-            
-            _tiles.Add(tile);
-            return tile;
-        }
-
-        private Tile GetPrefabForCoordinate(Vector2Int coord)
-        {
-            int impassableCount = defaultMap.ImpassableTiles.Count;
-
-            Debug.Log($"imp count: {impassableCount}");
-            
-            if (impassableCount == 0)
+           
+            Tile tile = null;
+            if (mapData != null)
             {
-                return grassTile;
-            }
-
-            for (int i = 0; i < impassableCount; i++)
-            {
-                Vector2Int impassableCoord = defaultMap.ImpassableTiles[i];
-                Debug.Log($"imp coord: {impassableCoord}");
-                Debug.Log($"this coord: {coord}");
-                if (impassableCoord.x == coord.x && impassableCoord.y == coord.y)
+                foreach (Vector2Int entry in mapData.ImpassableTiles) 
                 {
-                    return impassableTile;
+                    if (entry == new Vector2Int(x, z)) 
+                    {
+                        tile = Instantiate(impassableTile, position, Quaternion.identity, tileParent);
+                        break;
+                    }
                 }
             }
-
-            return grassTile;
+            if (tile == null) tile = Instantiate(grassTile, position, Quaternion.identity, tileParent);
+            tile.Configure(new Vector2Int(x, z));
+            _tiles.Add(tile);
         }
     }
 }

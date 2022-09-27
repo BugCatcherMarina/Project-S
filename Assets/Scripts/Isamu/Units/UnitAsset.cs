@@ -23,15 +23,11 @@ namespace Isamu.Units
         public string UnitName => unitName;
         public SpawnPosition Spawn => spawnPosition;
         public UnitStats Stats => stats;
-        public float TileMoveDuration => tileMoveDuration;
         public ActionAsset[] ActionAssets => actionAssets;
         
         [SerializeField] private string unitName;
         [SerializeField] private SpawnPosition spawnPosition;
         [SerializeField] private UnitStats stats;
-        
-        [Tooltip("The time in seconds a unit takes to move between two tiles (placeholder functionality).")]
-        [SerializeField] private float tileMoveDuration = 0.5f;
         
         [Tooltip("All possible actions this unit can take on its turn.")]
         [SerializeField] private ActionAsset[] actionAssets;
