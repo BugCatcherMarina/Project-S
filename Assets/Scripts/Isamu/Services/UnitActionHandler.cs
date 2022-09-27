@@ -22,7 +22,7 @@ namespace Isamu.Services
         private static void HandleActionSelected(UnitBehaviour unitBehaviour, ActionAsset actionAsset)
         {
             actionAsset.OnActionComplete += HandleActionComplete;
-            actionAsset.ExecuteAction(unitBehaviour);
+            actionAsset.SelectAction(unitBehaviour);
         }
 
         private static void HandleActionComplete(ActionAsset actionAsset)
