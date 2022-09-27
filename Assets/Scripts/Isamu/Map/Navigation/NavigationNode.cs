@@ -1,123 +1,118 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Isamu.Map;
-using UnityEditor;
 
 namespace Isamu.Map.Navigation
 {
     [RequireComponent(typeof(Tile))]
     public class NavigationNode : MonoBehaviour
     {
-        public static event Action<NavigationNode> NavigationNodeCreated;
+        private const float DEBUG_SPHERE_RADIUS = 0.4f;
+        private readonly Color _gizmosBlockedColor = Color.red;
+        private readonly Color _gizmosDefaultColor = Color.green;
 
-        [SerializeField] private GameObject NavigationMarker;
-
-        [SerializeField] 
-        private bool _isBlocked = false;
-
-        public bool IsBlocked 
-        { 
-            set { _isBlocked = value; }
-            get { return _isBlocked; }
+        public bool IsBlocked
+        {
+            get => isBlocked;
+            set => isBlocked = value;
         }
 
+        public static int Cost => 1;
 
-        private int _cost = 1;
-        public int Cost
-        {
-            get { return _cost; }
-            set { _cost = value; }
-        }
+        public Vector2Int GridPosition => _tile.GridPosition;
+        public int X => _tile.GridPosition.x;
+        public int Z => _tile.GridPosition.y;
+        public Dictionary<NavigationNode, int> Links { get; } = new();
 
-        public Vector2Int GridPosition
+        [SerializeField] private GameObject navigationMarker;
+        [SerializeField] private bool isBlocked;
+        
+        private Tile _tile;
+        private MeshRenderer _navMarkerRend;
+
+        public void ShowMarker(bool isVisible)
         {
-            get
+            if (navigationMarker != null)
             {
-                return GetComponent<Tile>().GridPosition;
-            }
-        }
-        public int X
-        {
-            get
-            {
-                return GetComponent<Tile>().GridPosition.x;
-            } 
-        }
-        public int Y
-        {
-            get
-            {
-                return GetComponent<Tile>().GridPosition.y;
+                _navMarkerRend.enabled = isVisible;
             }
         }
 
-        private Dictionary<NavigationNode, int> _links = new Dictionary<NavigationNode, int>();
-        public Dictionary<NavigationNode, int> Links { get { return _links; } }
-
-        public void ShowMarker(bool isVisible = true)
-        {
-            if (NavigationMarker == null) return;
-
-            MeshRenderer renderer = NavigationMarker.GetComponent<MeshRenderer>();
-            if (renderer != null) renderer.enabled = isVisible;
-        }
         public void LinkNode(NavigationNode node, int cost)
-        {
-            if (!Links.ContainsKey(node)) 
-            { 
-                Links.Add(node, cost);
-                if (!node.Links.ContainsKey(this)) 
-                { 
-                    node.Links.Add(this, cost);
-                }
-            }
-        }
-        public void UnlinkNode(NavigationNode node)
         {
             if (Links.ContainsKey(node))
             {
-                Links.Remove(node);
-                if (node.Links.ContainsKey(this))
-                {
-                    node.Links.Remove(this);
-                }
+                return;
+            }
+
+            Links.Add(node, cost);
+            
+            if (!node.Links.ContainsKey(this)) 
+            { 
+                node.Links.Add(this, cost);
             }
         }
 
-        private void DrawDebug() {
-            if (NavigationMarker == null) return;
-            Vector3 pos_outbound = NavigationMarker.transform.position;
+        public void UnlinkNode(NavigationNode node)
+        {
+            if (!Links.ContainsKey(node))
+            {
+                return;
+            }
+
+            Links.Remove(node);
+
+            if (node.Links.ContainsKey(this))
+            {
+                node.Links.Remove(this);
+            }
+        }
+
+        private void DrawDebug() 
+        {
+            if (navigationMarker == null)
+            {
+                return;
+            }
+
+            Vector3 posOutbound = navigationMarker.transform.position;
             Color color = Color.magenta;
+            
             foreach (NavigationNode node in Links.Keys)
             {
-                if (node.NavigationMarker == null) break;
-                Vector3 pos_inbound = node.NavigationMarker.transform.position;
-                Debug.DrawLine(pos_inbound, pos_outbound, color);
+                if (node.navigationMarker == null)
+                {
+                    break;
+                }
+
+                Vector3 posInbound = node.navigationMarker.transform.position;
+                Debug.DrawLine(posInbound, posOutbound, color);
             }
         }
 
-        private void OnDrawGizmoss()
+        private void OnDrawGizmos()
         {
-            if (NavigationMarker == null) return;
-            Vector3 position = NavigationMarker.transform.position;
-            if (IsBlocked)
+            if (navigationMarker == null)
             {
-                Gizmos.color = Color.red;
+                return;
             }
-            else
-            {
-                Gizmos.color = Color.green;
-            }
-            Gizmos.DrawSphere(position, 0.4f);
+
+            Vector3 position = navigationMarker.transform.position;
+
+            Gizmos.color = IsBlocked ? _gizmosBlockedColor : _gizmosDefaultColor;
+            Gizmos.DrawSphere(position, DEBUG_SPHERE_RADIUS);
         }
 
+        #if UNITY_EDITOR
         private void Update()
         {
             DrawDebug();
         }
+        #endif
 
-
+        private void Awake()
+        {
+            _tile = GetComponent<Tile>();
+            _navMarkerRend = navigationMarker.GetComponent<MeshRenderer>();
+        }
     }
 }

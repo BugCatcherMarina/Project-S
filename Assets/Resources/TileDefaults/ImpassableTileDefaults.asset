@@ -9,16 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20b74d2dd3694cffa45f8dea0891c965, type: 3}
-  m_Name: Wolf
+  m_Script: {fileID: 11500000, guid: 462e7eaafd124b6993c46bb4fd5d998c, type: 3}
+  m_Name: ImpassableTileDefaults
   m_EditorClassIdentifier: 
-  unitName: Wolf
-  spawnPosition:
-    x: 7
-    z: 3
-  stats:
-    movement: 2
-    speed: 5
-  tileMoveDuration: 0.5
-  actionAssets:
-  - {fileID: 11400000, guid: 02f4fb59382cc49969c6c081bd70b568, type: 2}
+  defaultColor: {r: 1, g: 0.504717, b: 0.504717, a: 1}
+  hoverColor: {r: 1, g: 0.8066038, b: 0.8066038, a: 1}
+  selectedColor: {r: 0.735849, g: 0.31585974, b: 0.31585974, a: 1}

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 462e7eaafd124b6993c46bb4fd5d998c, type: 3}
-  m_Name: TileDefaults
+  m_Name: GrassTileDefaults
   m_EditorClassIdentifier: 
   defaultColor: {r: 0.90588236, g: 0.90588236, b: 0.90588236, a: 1}
   hoverColor: {r: 0.39048594, g: 0.59445554, b: 0.6132076, a: 1}

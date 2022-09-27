@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using Isamu.Map;
 using Isamu.Map.Navigation;
 using Isamu.Services;
@@ -10,7 +10,9 @@ namespace Isamu.Units
 {
     public class UnitBehaviour : MonoBehaviour
     {
-
+        public static event Action<PathRequestInput, Action<PathRequestResult>> OnPathRequested;
+        public static event Action<UnitAsset.SpawnPosition, Action<NavigationNode>> OnStartNodeRequested; 
+        
         public UnitAsset UnitAsset { get; private set; }
 
         [SerializeField] private GameObject unitActiveSprite;
@@ -26,85 +28,76 @@ namespace Isamu.Units
         }
 
         private Transform _transform;
-
         private NavigationNode _currentNode;
-        public NavigationNode CurrentNode { get { return _currentNode; } }
-
-        private void UpdateCurrentNode() 
-        {
-
-            Vector3 start = transform.position;
-            Vector3 direction = Vector3.down;
-            RaycastHit hit;
-            Physics.Raycast(start, direction, out hit);
-
-            NavigationNode node = hit.collider.gameObject.GetComponent<NavigationNode>();
-            if (node != null)
-            {
-                _currentNode = node;
-            }
-            else
-            {
-                _currentNode = null;
-                Debug.Log("That's odd there is no Navigation Node Under Me");
-            }
-
-        }
+        private Action _onActionComplete;
 
         public void Configure(UnitAsset unitAsset)
         {
             UnitAsset = unitAsset;
             unitNameText.text = unitAsset.UnitName;
+            OnStartNodeRequested?.Invoke(unitAsset.Spawn, ToggleNodeBlocking);
+        }
+
+        public void MoveToTile(Tile targetTile, Action onMoveComplete)
+        {
+            _onActionComplete = onMoveComplete;
+            OnPathRequested?.Invoke(new PathRequestInput(_currentNode, targetTile.NavigationNode), MoveUnitAlongPath);
+        }
+
+        private void MoveUnitAlongPath(PathRequestResult path)
+        {
+            StartCoroutine(this.ExecuteAfterCoroutine(MoveRoutine(path), () =>
+            {
+                ToggleNodeBlocking(path.Nodes[0]);
+                _onActionComplete?.Invoke();
+            }));
+        }
+
+        private IEnumerator MoveRoutine(PathRequestResult path)
+        {
+            for (int i = path.NodeCount - 1; i >= 0; i--)
+            {
+                NavigationNode nextNode = path.Nodes[i];
+                nextNode.ShowMarker(true);
+
+                float moveTime = 0f;
+
+                while (moveTime < UnitAsset.TileMoveDuration)
+                {
+                    Vector3 pos = Transform.position;
+                    
+                    float t = moveTime / UnitAsset.TileMoveDuration;
+                    
+                    float newX = Mathf.Lerp(pos.x, nextNode.X, t);
+                    float newZ = Mathf.Lerp(pos.z, nextNode.Z, t);
+                    
+                    pos.x = newX;
+                    pos.z = newZ;
+                    
+                    Transform.position = pos;
+                    moveTime += Time.deltaTime;
+                    
+                    yield return null;
+                }
+            }
         }
         
-        // Obviously this should be replaced with pathfinding eventually -- this is just temporary.
-        // Teleportation! lol. This also doesn't take into account a unit's Movement stat yet.
-        public void MoveTo(Tile tile, Action onMoveComplete)
+        private void ToggleNodeBlocking(NavigationNode newNode)
         {
-            LeaveCurrentNode();
-
-            NavigationGrid.HideNodeMarkers();
-
-
-            Vector3 position = Transform.position;
-            position.x = tile.X;
-            position.z = tile.Z;
-            Vector2Int finish = new Vector2Int((int)position.x, (int)position.z);
-
-            List<NavigationNode> path =  NavigationGrid.GetPath(_currentNode, tile.NavigationNode);
-            foreach (NavigationNode node in path)
+            if (_currentNode != null)
             {
-                node.ShowMarker(true);
+                _currentNode.IsBlocked = false;
             }
-
-            Transform.position = position;
-
-            EnterNode();
-
-
-            onMoveComplete?.Invoke();
+                    
+            _currentNode = newNode;
+            _currentNode.IsBlocked = true;
         }
 
-
-        public void LeaveCurrentNode() 
-        {
-            Debug.Assert(_currentNode != null, "Unit is not attached to a navigation node");
-            _currentNode.IsBlocked = false;
-        }
-        public void EnterNode()
-        {
-            UpdateCurrentNode();
-            if (_currentNode != null) _currentNode.IsBlocked = true;
-        }
         private void Awake()
         {
             ActiveUnitHandler.OnUnitActivate += HandleUnitActivate;
         }
-        private void Start()
-        {
-            EnterNode();
-            Debug.Log(_currentNode.GridPosition);
-        }
+
         private void OnDestroy()
         {
             ActiveUnitHandler.OnUnitActivate -= HandleUnitActivate;
@@ -113,8 +106,6 @@ namespace Isamu.Units
         private void HandleUnitActivate(UnitBehaviour unitBehaviour)
         {
             unitActiveSprite.SetActive(unitBehaviour == this);
-
-           
         }
     }
 }
