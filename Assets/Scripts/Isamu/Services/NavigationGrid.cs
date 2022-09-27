@@ -141,13 +141,14 @@ namespace Isamu.Services
         
         //returning costs as well as a node list can be handy for highlighting tiles in different colors.
         //i.e. unit can move to the spot and still be able to attack and unit moving too far and not being able to
-        public void GetNodesWithinCost(MoveAction.AffordableNodesRequest request, Action<MoveAction.AffordableNodesResult> resultCallback) 
+        private void GetNodesWithinCost(MoveAction.AffordableNodesRequest request, Action<MoveAction.AffordableNodesResult> resultCallback) 
         {
             List<NavigationNode> nodes = new List<NavigationNode>();
             List<int> costs = new List<int>();
 
             NavigationNode[,] cameFrom = new NavigationNode[_gridSize.x, _gridSize.y];
             int[,] costSoFar = new int[_gridSize.x, _gridSize.y];
+            
             for (int i = 0; i < _gridSize.x; i++)
             {
                 for (int j = 0; j < _gridSize.y; j++)
@@ -169,14 +170,12 @@ namespace Isamu.Services
 
                 foreach (NavigationNode neighbour in node.Links.Keys)
                 {
-                    int new_cost = costSoFar[node.X, node.Z] + node.Links[neighbour];
+                    int newCost = costSoFar[node.X, node.Z] + node.Links[neighbour];
 
-                    if (new_cost < costSoFar[neighbour.X, neighbour.Z] &&
-                       (!neighbour.IsBlocked || request.GoOverBlocked)&&
-                       new_cost <= request.MaxCost)
+                    if (newCost < costSoFar[neighbour.X, neighbour.Z] && (!neighbour.IsBlocked || request.GoOverBlocked) && newCost <= request.MaxCost)
                     {
-                        costSoFar[neighbour.X, neighbour.Z] = new_cost;
-                        frontier.Enqueue(neighbour, new_cost);//
+                        costSoFar[neighbour.X, neighbour.Z] = newCost;
+                        frontier.Enqueue(neighbour, newCost);
                         cameFrom[neighbour.X, neighbour.Z] = node;
                     }
                 }

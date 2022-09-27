@@ -1,99 +1,68 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Isamu.Map.Navigation
 {
-    
     // I was hoping to use PriorityQueue from the library, but apparently it wasn't a thing till .NET 6
-    class NavQueue
+    internal class NavQueue
     {
-        class NodeWithPriority {
-            public NavigationNode node;
-            public int priority;
+        private class NodeWithPriority 
+        {
+            public readonly NavigationNode Node;
+            public readonly int Priority;
+            
             public NodeWithPriority(NavigationNode node, int priority) 
             { 
-                this.node = node;
-                this.priority = priority;
+                Node = node;
+                Priority = priority;
             }
         }
-        private List<NodeWithPriority> list;
-        public int Count { get { return list.Count; } }
+
+        public int Count => _list.Count;
+        private readonly List<NodeWithPriority> _list;
 
         public NavQueue()
         {
-            list = new List<NodeWithPriority>();
+            _list = new List<NodeWithPriority>();
         }
 
         public NavQueue(int count)
         {
-            list = new List<NodeWithPriority>(count);
+            _list = new List<NodeWithPriority>(count);
         }
-
 
         public void Enqueue(NavigationNode node, int priority)
         {
-            NodeWithPriority element = new NodeWithPriority(node, priority);    
+            NodeWithPriority element = new NodeWithPriority(node, priority);   
+            
             for (int i = 0; i < Count; i++) 
             {
-                if (list[i].priority <= priority ) 
+                if (_list[i].Priority <= priority ) 
                 {
-                    list.Insert(i, element);
+                    _list.Insert(i, element);
                     return;
                 }
             }
-            list.Add(element);
-
-            //list.Add(new NodeWithPriority(node, priority));
-            //int i = Count - 1;
-
-
-            //while (i > 0)
-            //{
-            //    int p = (i - 1) / 2;
-            //    if (list[p].priority <= priority) break;
-
-            //    list[i] = list[p];
-            //    i = p;
-            //}
-
-            //if (Count > 0) list[i].priority = priority;
+            
+            _list.Add(element);
         }
 
         public NavigationNode Dequeue()
         {
-            var value = list[Count- 1];
-            list.RemoveAt(Count-1);
-            return value.node;
-            //NodeWithPriority min = Peek();
-            //NodeWithPriority root = list[Count - 1];
-            //list.RemoveAt(Count - 1);
-
-            //int i = 0;
-            //while (i * 2 + 1 < Count)
-            //{
-            //    int a = i * 2 + 1;
-            //    int b = i * 2 + 2;
-            //    int c = b < Count && list[b].priority < list[a].priority ? b : a;
-
-            //    if (list[c].priority >= root.priority) break;
-            //    list[i] = list[c];
-            //    i = c;
-            //}
-
-            //if (Count > 0) list[i] = root;
-            //return min.node;
+            var value = _list[Count- 1];
+            _list.RemoveAt(Count-1);
+            return value.Node;
         }
+        
         private NodeWithPriority Peek()
         {
             Debug.Assert(Count != 0);
-            return list[0];
+            return _list[0];
         }
 
         public void Clear()
         {
-            list.Clear();
+            _list.Clear();
         }
     }
 }
