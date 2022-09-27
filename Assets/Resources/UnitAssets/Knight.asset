@@ -17,7 +17,7 @@ MonoBehaviour:
     x: 1
     z: 2
   stats:
-    movement: 0
+    movement: 2
     speed: 2
   actionAssets:
   - {fileID: 11400000, guid: 02f4fb59382cc49969c6c081bd70b568, type: 2}
