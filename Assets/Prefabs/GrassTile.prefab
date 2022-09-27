@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1750838d854543a4aaab2fa2332bdbd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileDefaults: {fileID: 11400000, guid: a93ebde03d7ea4374a92961ea8ce8312, type: 2}
+  tileDefaults: {fileID: 11400000, guid: 9ef4bad18cdcd4402838ab80002ba9d5, type: 2}
   meshRenderer: {fileID: 264306464910578316}
   navigationNode: {fileID: 8525096748366340972}
 --- !u!65 &9016553423934597371
@@ -315,3 +315,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navigationMarker: {fileID: 3072457282973383822}
+  isBlocked: 0

@@ -11,7 +11,7 @@ namespace Isamu.Units.TurnActions
         
         [SerializeField] private string actionName;
         
-        public abstract void ExecuteAction(UnitBehaviour unitBehaviour);
+        public abstract void SelectAction(UnitBehaviour unitBehaviour);
 
         protected void HandleActionComplete()
         {

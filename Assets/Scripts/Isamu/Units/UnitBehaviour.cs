@@ -18,6 +18,8 @@ namespace Isamu.Units
         [SerializeField] private GameObject unitActiveSprite;
         [SerializeField] private TMP_Text unitNameText;
         
+        public NavigationNode CurrentNode { get; private set; }
+
         private Transform Transform
         {
             get
@@ -28,7 +30,6 @@ namespace Isamu.Units
         }
 
         private Transform _transform;
-        private NavigationNode _currentNode;
         private Action _onActionComplete;
 
         public void Configure(UnitAsset unitAsset)
@@ -41,7 +42,7 @@ namespace Isamu.Units
         public void MoveToTile(Tile targetTile, Action onMoveComplete)
         {
             _onActionComplete = onMoveComplete;
-            OnPathRequested?.Invoke(new PathRequestInput(_currentNode, targetTile.NavigationNode), MoveUnitAlongPath);
+            OnPathRequested?.Invoke(new PathRequestInput(CurrentNode, targetTile.NavigationNode), MoveUnitAlongPath);
         }
 
         private void MoveUnitAlongPath(PathRequestResult path)
@@ -84,13 +85,13 @@ namespace Isamu.Units
         
         private void ToggleNodeBlocking(NavigationNode newNode)
         {
-            if (_currentNode != null)
+            if (CurrentNode != null)
             {
-                _currentNode.IsBlocked = false;
+                CurrentNode.IsBlocked = false;
             }
                     
-            _currentNode = newNode;
-            _currentNode.IsBlocked = true;
+            CurrentNode = newNode;
+            CurrentNode.IsBlocked = true;
         }
 
         private void Awake()

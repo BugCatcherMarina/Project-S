@@ -14,9 +14,17 @@ namespace Isamu.Map
         public Color DefaultColor => defaultColor;
         public Color HoverColor => hoverColor;
         public Color SelectedColor => selectedColor;
-        
+        public Color AvailableColor => availableColor;
+        public Color UnavailableColor => unavailableColor;
+        public Color RiskyColor => riskyColor;
+        public Color ImminentDangerColor => imminentDangerColor;
+
         [SerializeField] private Color defaultColor;
         [SerializeField] private Color hoverColor;
         [SerializeField] private Color selectedColor;
+        [SerializeField] private Color availableColor;
+        [SerializeField] private Color unavailableColor;
+        [SerializeField] private Color riskyColor;
+        [SerializeField] private Color imminentDangerColor;
     }
 }

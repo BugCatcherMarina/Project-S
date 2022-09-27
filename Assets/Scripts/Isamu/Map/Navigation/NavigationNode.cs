@@ -18,15 +18,15 @@ namespace Isamu.Map.Navigation
 
         public static int Cost => 1;
 
-        public Vector2Int GridPosition => _tile.GridPosition;
-        public int X => _tile.GridPosition.x;
-        public int Z => _tile.GridPosition.y;
+        public Vector2Int GridPosition => Tile.GridPosition;
+        public int X => Tile.GridPosition.x;
+        public int Z => Tile.GridPosition.y;
         public Dictionary<NavigationNode, int> Links { get; } = new();
+        public Tile Tile { get; private set; }
 
         [SerializeField] private GameObject navigationMarker;
         [SerializeField] private bool isBlocked;
-        
-        private Tile _tile;
+
         private MeshRenderer _navMarkerRend;
 
         public void ShowMarker(bool isVisible)
@@ -111,7 +111,7 @@ namespace Isamu.Map.Navigation
 
         private void Awake()
         {
-            _tile = GetComponent<Tile>();
+            Tile = GetComponent<Tile>();
             _navMarkerRend = navigationMarker.GetComponent<MeshRenderer>();
         }
     }

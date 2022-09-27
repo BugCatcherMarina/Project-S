@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Isamu.Map;
 using Isamu.Map.Navigation;
 using Isamu.Units;
+using Isamu.Units.TurnActions;
 using Isamu.Utils;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace Isamu.Services
             MapGenerator.OnMapGenerated += HandleMapGenerated;
             UnitBehaviour.OnPathRequested += HandlePathRequested;
             UnitBehaviour.OnStartNodeRequested += HandleStartNodeRequested;
+            MoveAction.OnAffordableNodesRequested += GetNodesWithinCost;
         }
         
         public override void Disable()
@@ -27,6 +29,7 @@ namespace Isamu.Services
             MapGenerator.OnMapGenerated -= HandleMapGenerated;
             UnitBehaviour.OnPathRequested -= HandlePathRequested;
             UnitBehaviour.OnStartNodeRequested -= HandleStartNodeRequested;
+            MoveAction.OnAffordableNodesRequested -= GetNodesWithinCost;
         }
 
         private void HandleMapGenerated(MapAsset map, List<NavigationNode> nodes)
@@ -73,6 +76,17 @@ namespace Isamu.Services
             HideNodeMarkers();
             
             List<NavigationNode> path = new List<NavigationNode>();
+            
+            if(start == finish)
+            {
+                return path;
+            }
+
+            if (finish.IsBlocked && !goOverBlocked)
+            {
+                return path;
+            }
+
             NavigationNode[,] cameFrom = new NavigationNode[_gridSize.x, _gridSize.y];
             int[,] costSoFar = new int[_gridSize.x, _gridSize.y];
             
@@ -96,7 +110,7 @@ namespace Isamu.Services
                 if (node == finish)
                 {
                     path.Add(finish);
-                    NavigationNode previous = cameFrom[finish.X, finish.Z];
+                    NavigationNode previous = cameFrom[node.X, node.Z];
                     
                     while (costSoFar[previous.X, previous.Z] != 0)
                     {
@@ -123,6 +137,65 @@ namespace Isamu.Services
             }
 
             return path;
+        }
+        
+        //returning costs as well as a node list can be handy for highlighting tiles in different colors.
+        //i.e. unit can move to the spot and still be able to attack and unit moving too far and not being able to
+        public void GetNodesWithinCost(MoveAction.AffordableNodesRequest request, Action<MoveAction.AffordableNodesResult> resultCallback) 
+        {
+            List<NavigationNode> nodes = new List<NavigationNode>();
+            List<int> costs = new List<int>();
+
+            NavigationNode[,] cameFrom = new NavigationNode[_gridSize.x, _gridSize.y];
+            int[,] costSoFar = new int[_gridSize.x, _gridSize.y];
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                for (int j = 0; j < _gridSize.y; j++)
+                {
+                    costSoFar[i, j] = int.MaxValue;
+                }
+            }
+
+            NavigationNode start = request.Start;
+
+            NavQueue frontier = new NavQueue();
+            frontier.Enqueue(start, 0);
+            cameFrom[start.X, start.Z] = null;
+            costSoFar[start.X, start.Z] = 0;
+
+            while (frontier.Count > 0)
+            {
+                NavigationNode node = frontier.Dequeue();
+
+                foreach (NavigationNode neighbour in node.Links.Keys)
+                {
+                    int new_cost = costSoFar[node.X, node.Z] + node.Links[neighbour];
+
+                    if (new_cost < costSoFar[neighbour.X, neighbour.Z] &&
+                       (!neighbour.IsBlocked || request.GoOverBlocked)&&
+                       new_cost <= request.MaxCost)
+                    {
+                        costSoFar[neighbour.X, neighbour.Z] = new_cost;
+                        frontier.Enqueue(neighbour, new_cost);//
+                        cameFrom[neighbour.X, neighbour.Z] = node;
+                    }
+                }
+            }
+
+            //potential place for optimization
+            for (int i = 0; i < _gridSize.x; i++)
+            {
+                for (int j = 0; j < _gridSize.y; j++)
+                {
+                    if (costSoFar[i, j] <= request.MaxCost) 
+                    {
+                        nodes.Add(_grid[i, j]);
+                        costs.Add(costSoFar[i, j]);
+                    }
+                }
+            }
+            
+            resultCallback?.Invoke(new MoveAction.AffordableNodesResult(nodes, costs));
         }
 
         private void AddNode(NavigationNode node) 
