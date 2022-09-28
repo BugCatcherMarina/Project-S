@@ -6,7 +6,7 @@ namespace Isamu.Map.Navigation
     [RequireComponent(typeof(Tile))]
     public class NavigationNode : MonoBehaviour
     {
-        private const float DEBUG_SPHERE_RADIUS = 0.4f;
+        private const float DEBUG_SPHERE_RADIUS = 0.2f;
         private readonly Color _gizmosBlockedColor = Color.red;
         private readonly Color _gizmosDefaultColor = Color.green;
 

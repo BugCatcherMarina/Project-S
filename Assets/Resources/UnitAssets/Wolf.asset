@@ -17,7 +17,7 @@ MonoBehaviour:
     x: 7
     z: 3
   stats:
-    movement: 2
+    movement: 5
     speed: 5
   tileMoveDuration: 0.5
   actionAssets:
