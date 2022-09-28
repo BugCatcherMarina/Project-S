@@ -1,4 +1,4 @@
-using Isamu.Utils;
+using Isamu.Cameras;
 using UnityEngine;
 
 namespace Isamu.General

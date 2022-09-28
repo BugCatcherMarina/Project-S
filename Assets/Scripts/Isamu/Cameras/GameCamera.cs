@@ -1,6 +1,7 @@
+using Isamu.General;
 using UnityEngine;
 
-namespace Isamu.General
+namespace Isamu.Cameras
 {
     [RequireComponent(typeof(Camera))]
     public class GameCamera : Singleton<GameCamera>
