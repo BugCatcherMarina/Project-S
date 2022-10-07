@@ -8,6 +8,8 @@ namespace Isamu.Services
     public class UnitActionHandler : Service
     {
         public static event Action OnUnitTurnComplete;
+
+        private ActionAsset _selectedAction;
         
         public UnitActionHandler()
         {
@@ -19,16 +21,24 @@ namespace Isamu.Services
             UnitActionButton.OnUnitActionSelected += HandleActionSelected;
         }
 
-        private static void HandleActionSelected(UnitBehaviour unitBehaviour, ActionAsset actionAsset)
+        private void HandleActionSelected(UnitBehaviour unitBehaviour, ActionAsset actionAsset)
         {
+            // If an action was already queued, cancel it before selecting the new action.
+            if (_selectedAction != null)
+            {
+                _selectedAction.Cancel();
+            }
+
+            _selectedAction = actionAsset;
             actionAsset.OnActionComplete += HandleActionComplete;
             actionAsset.SelectAction(unitBehaviour);
         }
 
-        private static void HandleActionComplete(ActionAsset actionAsset)
+        private void HandleActionComplete(ActionAsset actionAsset)
         {
             actionAsset.OnActionComplete -= HandleActionComplete;
             OnUnitTurnComplete?.Invoke();
+            _selectedAction = null;
         }
     }
 }

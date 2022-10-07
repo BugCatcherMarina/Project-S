@@ -22,6 +22,7 @@ namespace Isamu.General
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            Debug.Log("OnPointerClick");
             onPointerClick?.Invoke();
         }
     }

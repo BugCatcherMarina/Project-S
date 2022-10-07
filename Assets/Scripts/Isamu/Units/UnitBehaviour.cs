@@ -20,6 +20,12 @@ namespace Isamu.Units
         
         public NavigationNode CurrentNode { get; private set; }
 
+        // A placeholder until we are calculating damage from sources such as abilities, statistics, weapons, buffs, etc.
+        public int GetDamage()
+        {
+            return 1;
+        }
+        
         private Transform Transform
         {
             get
@@ -36,6 +42,7 @@ namespace Isamu.Units
         {
             UnitAsset = unitAsset;
             unitNameText.text = unitAsset.UnitName;
+            gameObject.name = unitAsset.UnitName;
             OnStartNodeRequested?.Invoke(unitAsset.Spawn, ToggleNodeBlocking);
         }
 

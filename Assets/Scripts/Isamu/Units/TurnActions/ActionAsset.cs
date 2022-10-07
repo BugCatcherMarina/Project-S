@@ -13,9 +13,19 @@ namespace Isamu.Units.TurnActions
         
         public abstract void SelectAction(UnitBehaviour unitBehaviour);
 
+        /// <summary>
+        /// Called by UnitActionHandler if a new UnitActionButton is selected 
+        /// </summary>
+        public virtual void Cancel()
+        {
+            CleanUpAsset();
+        }
+        
         protected void HandleActionComplete()
         {
             OnActionComplete?.Invoke(this);
         }
+
+        protected abstract void CleanUpAsset();
     }
 }

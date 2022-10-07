@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Isamu.Map;
 using Isamu.Map.Navigation;
 using Isamu.Services;
 using Isamu.Utils;
+using System;
 using UnityEngine;
 
 namespace Isamu.Units.TurnActions
@@ -11,32 +10,6 @@ namespace Isamu.Units.TurnActions
     [CreateAssetMenu(fileName = NAME, menuName = ProjectConsts.ACTION_ASSET_MENU + NAME)]
     public class MoveAction : ActionAsset
     {
-        public class AffordableNodesRequest
-        {
-            public NavigationNode Start { get; }
-            public int MaxCost { get; }
-            public bool GoOverBlocked { get; }
-
-            public AffordableNodesRequest(NavigationNode start, int maxCost, bool goOverBlocked = false)
-            {
-                Start = start;
-                MaxCost = maxCost;
-                GoOverBlocked = goOverBlocked;
-            }
-        }
-
-        public class AffordableNodesResult
-        {
-            public List<NavigationNode> Nodes { get; }
-            public List<int> Costs { get; }
-
-            public AffordableNodesResult(List<NavigationNode> nodes, List<int> costs)
-            {
-                Nodes = nodes;
-                Costs = costs;
-            }
-        }
-
         private const int ATTACK_COST = 2;
         
         private const string NAME = nameof(MoveAction);
@@ -57,9 +30,19 @@ namespace Isamu.Units.TurnActions
             OnAffordableNodesRequested?.Invoke(new AffordableNodesRequest(_unit.CurrentNode, _unit.UnitAsset.Stats.Movement), HandleAffordableNodes);
         }
 
+        public override void Cancel()
+        {
+            CleanUpAsset();
+        }
+
+        protected override void CleanUpAsset()
+        {
+            TileSelectionHandler.OnTileSelected -= HandleTileSelected;
+        }
+
         private void HandleAffordableNodes(AffordableNodesResult result)
         {
-            for (int i = 0; i < result.Nodes.Count; i++)
+            for (int i = 0, count = result.Nodes.Count; i < count; i++)
             {
                 NavigationNode node = result.Nodes[i];
                 int cost = result.Costs[i];
@@ -84,9 +67,7 @@ namespace Isamu.Units.TurnActions
 
         private void HandleTileSelected(Tile tile)
         {
-            TileSelectionHandler.OnTileSelected -= HandleTileSelected;
-
-            if (tile.State == Tile.TileStates.Risky || tile.State == Tile.TileStates.Available)
+            if (tile.State is Tile.TileStates.Risky or Tile.TileStates.Available)
             {
                 _unit.MoveToTile(tile, HandleActionComplete);
             }
@@ -96,6 +77,8 @@ namespace Isamu.Units.TurnActions
             }
             
             OnMoveComplete?.Invoke();
+            
+            CleanUpAsset();
         }
     }
 }

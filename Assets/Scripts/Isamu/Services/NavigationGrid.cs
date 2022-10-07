@@ -141,7 +141,7 @@ namespace Isamu.Services
         
         //returning costs as well as a node list can be handy for highlighting tiles in different colors.
         //i.e. unit can move to the spot and still be able to attack and unit moving too far and not being able to
-        private void GetNodesWithinCost(MoveAction.AffordableNodesRequest request, Action<MoveAction.AffordableNodesResult> resultCallback) 
+        private void GetNodesWithinCost(AffordableNodesRequest request, Action<AffordableNodesResult> resultCallback) 
         {
             List<NavigationNode> nodes = new List<NavigationNode>();
             List<int> costs = new List<int>();
@@ -194,13 +194,11 @@ namespace Isamu.Services
                 }
             }
             
-            resultCallback?.Invoke(new MoveAction.AffordableNodesResult(nodes, costs));
+            resultCallback?.Invoke(new AffordableNodesResult(nodes, costs));
         }
 
         private void AddNode(NavigationNode node) 
         {
-            Debug.Log("Add Node");
-            
             if (node == null)
             {
                 Debug.LogError($"{nameof(AddNode)}: node is null");
