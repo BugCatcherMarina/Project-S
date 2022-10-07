@@ -17,6 +17,7 @@ namespace Isamu.Units.TurnActions
         public static event Action<AffordableNodesRequest, Action<AffordableNodesResult>> OnAffordableNodesRequested;
         public static event Action OnMoveSelected;
         public static event Action OnMoveComplete;
+        public static event Action OnMoveCancelled;
         
         private UnitBehaviour _unit;
         
@@ -32,6 +33,7 @@ namespace Isamu.Units.TurnActions
 
         public override void Cancel()
         {
+            OnMoveCancelled?.Invoke();
             CleanUpAsset();
         }
 
