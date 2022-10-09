@@ -17,8 +17,9 @@ MonoBehaviour:
     x: 1
     z: 2
   stats:
-    movement: 2
+    movement: 5
     speed: 2
   tileMoveDuration: 0.5
   actionAssets:
   - {fileID: 11400000, guid: 02f4fb59382cc49969c6c081bd70b568, type: 2}
+  - {fileID: 11400000, guid: 809213f21e4c94645afeba0203fc8b60, type: 2}

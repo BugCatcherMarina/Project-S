@@ -316,6 +316,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4171781044154418163}
   - component: {fileID: 4171781044154418164}
+  - component: {fileID: 3928299775989054088}
+  - component: {fileID: 8885599266733959988}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -355,6 +357,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitActiveSprite: {fileID: 886438629367327139}
   unitNameText: {fileID: 3408009875307963244}
+--- !u!114 &3928299775989054088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4171781044154418162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4500046b10634c999cc330f1ca161b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPointerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onPointerExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onPointerClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8885599266733959988}
+        m_TargetAssemblyTypeName: Isamu.Combat.Targetable, Assembly-CSharp
+        m_MethodName: InvokeTargetClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8885599266733959988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4171781044154418162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b6518d86db744cabdacb6f8be7a87a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7426502852113845866
 GameObject:
   m_ObjectHideFlags: 0

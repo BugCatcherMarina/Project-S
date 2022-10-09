@@ -120,12 +120,14 @@ namespace Isamu.Map
         {
             MoveAction.OnMoveSelected += HandleMoveSelected;
             MoveAction.OnMoveComplete += HandleMoveComplete;
+            MoveAction.OnMoveCancelled += HandleMoveCancelled;
         }
 
         private void OnDestroy()
         {
             MoveAction.OnMoveSelected -= HandleMoveSelected;
             MoveAction.OnMoveComplete -= HandleMoveComplete;
+            MoveAction.OnMoveCancelled -= HandleMoveCancelled;
         }
 
         private void HandleMoveSelected()
@@ -134,6 +136,11 @@ namespace Isamu.Map
         }
 
         private void HandleMoveComplete()
+        {
+            SetState(TileStates.Default);
+        }
+
+        private void HandleMoveCancelled()
         {
             SetState(TileStates.Default);
         }
