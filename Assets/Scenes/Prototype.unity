@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028349, g: 0.22571358, b: 0.3069225, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -774,10 +774,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controllerTransform: {fileID: 2141629244}
-  moveSpeed: 7
+  panSpeed: 7
   zoomSpeed: 9
   screenBorderThickness: 15
   screenYLimits: {x: 4, y: 10}
   screenLimitBuffers: {x: 1, y: 0, z: 2, w: -2}
-  screenXLimits: {x: 0, y: 0}
-  screenZLimits: {x: 0, y: 0}
