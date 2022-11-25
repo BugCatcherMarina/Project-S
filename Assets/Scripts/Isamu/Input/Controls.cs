@@ -46,6 +46,15 @@ namespace Isamu.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InGameMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e7c5613-8c0c-4c50-94c9-e4cdb1127591"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -169,6 +178,17 @@ namespace Isamu.Input
                     ""action"": ""ZoomCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e57b8293-e61c-4dbc-a1e0-b7214f1daff4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InGameMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -179,6 +199,7 @@ namespace Isamu.Input
             m_Computer = asset.FindActionMap("Computer", throwIfNotFound: true);
             m_Computer_MoveCamera = m_Computer.FindAction("MoveCamera", throwIfNotFound: true);
             m_Computer_ZoomCamera = m_Computer.FindAction("ZoomCamera", throwIfNotFound: true);
+            m_Computer_InGameMenu = m_Computer.FindAction("InGameMenu", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -240,12 +261,14 @@ namespace Isamu.Input
         private IComputerActions m_ComputerActionsCallbackInterface;
         private readonly InputAction m_Computer_MoveCamera;
         private readonly InputAction m_Computer_ZoomCamera;
+        private readonly InputAction m_Computer_InGameMenu;
         public struct ComputerActions
         {
             private @Controls m_Wrapper;
             public ComputerActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @MoveCamera => m_Wrapper.m_Computer_MoveCamera;
             public InputAction @ZoomCamera => m_Wrapper.m_Computer_ZoomCamera;
+            public InputAction @InGameMenu => m_Wrapper.m_Computer_InGameMenu;
             public InputActionMap Get() { return m_Wrapper.m_Computer; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -261,6 +284,9 @@ namespace Isamu.Input
                     @ZoomCamera.started -= m_Wrapper.m_ComputerActionsCallbackInterface.OnZoomCamera;
                     @ZoomCamera.performed -= m_Wrapper.m_ComputerActionsCallbackInterface.OnZoomCamera;
                     @ZoomCamera.canceled -= m_Wrapper.m_ComputerActionsCallbackInterface.OnZoomCamera;
+                    @InGameMenu.started -= m_Wrapper.m_ComputerActionsCallbackInterface.OnInGameMenu;
+                    @InGameMenu.performed -= m_Wrapper.m_ComputerActionsCallbackInterface.OnInGameMenu;
+                    @InGameMenu.canceled -= m_Wrapper.m_ComputerActionsCallbackInterface.OnInGameMenu;
                 }
                 m_Wrapper.m_ComputerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -271,6 +297,9 @@ namespace Isamu.Input
                     @ZoomCamera.started += instance.OnZoomCamera;
                     @ZoomCamera.performed += instance.OnZoomCamera;
                     @ZoomCamera.canceled += instance.OnZoomCamera;
+                    @InGameMenu.started += instance.OnInGameMenu;
+                    @InGameMenu.performed += instance.OnInGameMenu;
+                    @InGameMenu.canceled += instance.OnInGameMenu;
                 }
             }
         }
@@ -279,6 +308,7 @@ namespace Isamu.Input
         {
             void OnMoveCamera(InputAction.CallbackContext context);
             void OnZoomCamera(InputAction.CallbackContext context);
+            void OnInGameMenu(InputAction.CallbackContext context);
         }
     }
 }
