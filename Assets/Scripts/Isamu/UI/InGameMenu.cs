@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class InGameMenu : MonoBehaviour
 {
     [SerializeField] private GameObject menuObject;
+    [SerializeField] private bool hideMenuOnStart = true;
 
     private Controls controls;
     private bool isPaused;
@@ -13,14 +14,14 @@ public class InGameMenu : MonoBehaviour
     public void Pause()
     {
         isPaused = true;
-        menuObject.SetActive(true);
+        SetIsMenuVisible(true);
         Time.timeScale = 0;
     }
 
     public void Resume()
     {
         isPaused = false;
-        menuObject.SetActive(false);
+        SetIsMenuVisible(false);
         Time.timeScale = 1;
     }
 
@@ -55,11 +56,26 @@ public class InGameMenu : MonoBehaviour
 
     private void Awake()
     {
+        if (hideMenuOnStart)
+        {
+            SetIsMenuVisible(false);
+        }
+
+        InitializeInput();
+    }
+
+    private void InitializeInput()
+    {
         controls = new Controls();
 
         controls.Computer.InGameMenu.performed += TogglePauseState;
 
         controls.Enable();
+    }
+
+    private void SetIsMenuVisible(bool isVisible)
+    {
+        menuObject.SetActive(isVisible);
     }
 
     private void OnDestroy()
